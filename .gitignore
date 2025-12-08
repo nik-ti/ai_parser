@@ -1,0 +1,19 @@
+# Bytes
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# PyCharm / VSCode
+.idea/
+.vscode/
+.DS_Store
