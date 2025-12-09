@@ -1,7 +1,8 @@
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import builtins
 
-def execute_parsing_code(code: str, html_content: str):
+def execute_parsing_code(code: str, html_content: str, base_url: str = ""):
     """
     Executes the provided Python code in a sandboxed environment.
     The code has access to 'html_content' (str) and 'BeautifulSoup' (class).
@@ -47,6 +48,8 @@ def execute_parsing_code(code: str, html_content: str):
         "__builtins__": allowed_builtins,
         "BeautifulSoup": BeautifulSoup,
         "html_content": html_content,
+        "urljoin": urljoin,
+        "base_url": base_url,
     }
     
     # Local scope to capture variables defined by the code

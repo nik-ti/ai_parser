@@ -32,7 +32,7 @@ async def parse_url(request: UrlRequest):
         
         # 4. Execute Code in Sandbox
         logger.info("Executing code...")
-        parsed_data = execute_parsing_code(parsing_code, cleaned_html)
+        parsed_data = execute_parsing_code(parsing_code, cleaned_html, base_url=request.url)
         
         logger.info("Parsing successful.")
         return ParseResponse(ok=True, data=parsed_data)

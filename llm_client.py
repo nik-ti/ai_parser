@@ -32,6 +32,10 @@ Rules:
 8. Handle potential missing elements gracefully. ALWAYS check if an element exists before acting on it.
    - BAD: `soup.find('div').text`
    - GOOD: `div = soup.find('div'); val = div.text if div else ""`
+9. RESOLVE ALL RELATIVE URLs to absolute URLs.
+   - You have access to `base_url` (str) and `urljoin` (function).
+   - Example: `full_url = urljoin(base_url, relative_url)` if relative_url else None
+   - Apply this to ALL `href` and `src` attributes you extract.
 
 """
 

@@ -55,7 +55,7 @@ async def test_pipeline():
 
         # 4. Execute
         print("4. Executing in sandbox...")
-        result = execute_parsing_code(code, cleaned)
+        result = execute_parsing_code(code, cleaned, base_url=url)
         print(f"   Result: {result}")
 
         print("\nSUCCESS: Pipeline verified!")
