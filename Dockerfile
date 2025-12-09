@@ -1,6 +1,6 @@
 # Use the official Playwright image which comes with Python and browsers installed
 # This avoids the long "playwright install" step and missing system dependencies
-FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy
+FROM mcr.microsoft.com/playwright/python:v1.56.0-jammy
 
 WORKDIR /app
 
