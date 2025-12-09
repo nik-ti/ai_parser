@@ -23,7 +23,7 @@ Rules:
 2. IGNORE navigation links, headers, footers, and sidebars. Focus ONLY on the main content area.
 3. Extract relevant data.
    - If List Page: Extract a list of items (title, url, snippet). ONLY extract items from the MAIN list/feed. Do NOT extract links from navbars or "popular posts" sidebars.
-   - If Detail Page: Extract title, summary, full_text, main_image (url and alt text), and any other relevant links inside the article body.
+   - If Detail Page: Extract title, summary, full_text, images (a list of up to 3 relevant content images, each with url and alt text; do NOT include logos, icons, or site navigation graphics), and any other relevant links inside the article body.
    - If Unclear: Extract a generic text summary.
 4. Assign the final result to a variable named `parsed`.
 5. Do NOT import any modules. `BeautifulSoup` is ALREADY IMPORTED and available as a global variable.
