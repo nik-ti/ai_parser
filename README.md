@@ -25,37 +25,48 @@ The **AI Parser Microservice** is an intelligent web scraping tool that turns an
 -   **Web Framework**: FastAPI
 -   **Browser Automation**: Playwright
 -   **HTML Parsing**: BeautifulSoup4
--   **LLM Integration**: OpenAI API
+-   **LLM Integration**: OpenAI API (gpt-4o-mini)
 -   **Data Validation**: Pydantic
+-   **Deployment**: Docker & Docker Compose
 
 ## Installation & Setup
 
-1.  **Clone the repository** and navigate to the folder:
+### Option 1: Docker (Recommended for Production)
+
+1.  **Clone the repository**:
     ```bash
+    git clone https://github.com/nik-ti/ai_parser.git
     cd ai_parser
     ```
 
-2.  **Install dependencies**:
+2.  **Create `.env` file**:
     ```bash
-    pip install -r requirements.txt
+    echo "OPENAI_API_KEY=sk-your-key" > .env
     ```
 
-3.  **Install Playwright browsers**:
+3.  **Run with Docker Compose**:
     ```bash
+    docker compose up -d --build
+    ```
+    The service runs on `http://localhost:8000`.
+
+### Option 2: Local Python Setup
+
+1.  **Clone and install dependencies**:
+    ```bash
+    git clone https://github.com/nik-ti/ai_parser.git
+    cd ai_parser
+    pip install -r requirements.txt
     playwright install
     ```
 
-4.  **Set your OpenAI API Key**:
+2.  **Set API Key**:
+    Create a `.env` file with `OPENAI_API_KEY=sk-your-key`.
+
+3.  **Start the Server**:
     ```bash
-    export OPENAI_API_KEY="your-api-key-here"
+    uvicorn main:app --reload
     ```
-
-## Usage
-
-### Start the Server
-```bash
-uvicorn main:app --reload
-```
 
 ### Send a Request
 ```bash
