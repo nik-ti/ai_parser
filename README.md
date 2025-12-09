@@ -50,42 +50,62 @@ The **AI Parser Microservice** is an intelligent web scraping tool that turns an
     ```
     The service runs on `http://localhost:8000`.
 
-### Option 2: Local Python Setup
+### Production Deployment (Caddy / Nginx)
+For production, it is recommended to use a reverse proxy. We support **Caddy** out of the box for automatic HTTPS.
 
-1.  **Clone and install dependencies**:
+1.  **Install Caddy**:
     ```bash
-    git clone https://github.com/nik-ti/ai_parser.git
-    cd ai_parser
-    pip install -r requirements.txt
-    playwright install
+    sudo apt install -y caddy
     ```
 
-2.  **Set API Key**:
-    Create a `.env` file with `OPENAI_API_KEY=sk-your-key`.
-
-3.  **Start the Server**:
-    ```bash
-    uvicorn main:app --reload
+2.  **Configure Caddy (`/etc/caddy/Caddyfile`)**:
+    ```caddy
+    your-domain.com {
+        reverse_proxy localhost:8000
+    }
     ```
 
-### Send a Request
+## Usage
+
+### 1. Basic Parsing (Auto-Detect)
+The system will automatically detect if the page is a list or article and extract relevant fields.
+
 ```bash
 curl -X POST "http://localhost:8000/parse" \
      -H "Content-Type: application/json" \
      -d '{"url": "https://news.ycombinator.com"}'
 ```
 
+### 2. Dynamic Schema (Custom Fields)
+You can enforce a specific output structure by providing a `schema_map`.
+
+```bash
+curl -X POST "http://localhost:8000/parse" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "url": "https://news.aibase.com/news/23500",
+       "schema_map": {
+         "article_title": "The exact headline",
+         "author": "Author name or null",
+         "summary": "3 bullet points summary",
+         "date": "Published date (YYYY-MM-DD)"
+       }
+     }'
+```
+
 ### Response Format
 ```json
 {
   "ok": true,
-  "data": [
-    {
-      "title": "Example News Item",
-      "url": "https://example.com/item",
-      "snippet": "50 points by user 1 hour ago"
-    },
-    ...
-  ]
+  "data": {
+    "article_title": "Example News Item",
+    "author": "John Doe",
+    "summary": ["Point 1", "Point 2", "Point 3"],
+    "date": "2023-10-27"
+  }
 }
 ```
+
+## Troubleshooting
+- **Playwright Errors**: Ensure your Docker base image matches your `requirements.txt` version (currently `v1.56.0`).
+- **Empty Data**: Verify that the page content is not hidden behind a login or captcha. The system is designed for public pages.

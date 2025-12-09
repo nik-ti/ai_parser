@@ -8,7 +8,7 @@ def clean_html(html_content: str, max_length: int = 100000) -> str:
     soup = BeautifulSoup(html_content, "html.parser")
 
     # Remove unwanted tags
-    for tag in soup(["script", "style", "svg", "noscript", "iframe", "object", "embed", "meta", "link"]):
+    for tag in soup(["script", "style", "svg", "noscript", "iframe", "object", "embed", "meta", "link", "nav", "header", "footer", "aside"]):
         tag.decompose()
 
     # Remove comments

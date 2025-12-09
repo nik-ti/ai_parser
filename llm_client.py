@@ -20,32 +20,42 @@ The code will be executed in a sandboxed environment with the following availabl
 
 Rules:
 1. Parse `html_content` using `BeautifulSoup(html_content, 'html.parser')`.
-2. Extract relevant data.
-   - If List Page: Extract a list of items (title, url, snippet).
-   - If Detail Page: Extract title, summary, full_text, main_image (url and alt text), and any other relevant links.
+2. IGNORE navigation links, headers, footers, and sidebars. Focus ONLY on the main content area.
+3. Extract relevant data.
+   - If List Page: Extract a list of items (title, url, snippet). ONLY extract items from the MAIN list/feed. Do NOT extract links from navbars or "popular posts" sidebars.
+   - If Detail Page: Extract title, summary, full_text, main_image (url and alt text), and any other relevant links inside the article body.
    - If Unclear: Extract a generic text summary.
-3. Assign the final result to a variable named `parsed`.
-4. Do NOT import any modules. `BeautifulSoup` is ALREADY IMPORTED and available as a global variable.
-5. Do NOT use print().
-6. Do NOT include markdown code blocks (```python ... ```). Just the code.
-7. Handle potential missing elements gracefully. ALWAYS check if an element exists before acting on it.
+4. Assign the final result to a variable named `parsed`.
+5. Do NOT import any modules. `BeautifulSoup` is ALREADY IMPORTED and available as a global variable.
+6. Do NOT use print().
+7. Do NOT include markdown code blocks (```python ... ```). Just the code.
+8. Handle potential missing elements gracefully. ALWAYS check if an element exists before acting on it.
    - BAD: `soup.find('div').text`
    - GOOD: `div = soup.find('div'); val = div.text if div else ""`
 
 """
 
-async def generate_parsing_code(html_snippet: str) -> str:
+async def generate_parsing_code(html_snippet: str, schema_map: dict[str, str] = None) -> str:
     """
     Sends the HTML snippet to the LLM and returns the generated Python code.
+    If schema_map is provided, it instructs the LLM to extract exactly those fields.
     """
     
+    current_system_prompt = SYSTEM_PROMPT
+    if schema_map:
+        schema_instruction = "\n\nCRITICAL: You MUST extract the following fields. The output `parsed` variable MUST be a dictionary (or list of dicts) with these EXACT keys:\n"
+        for key, desc in schema_map.items():
+            schema_instruction += f"- {key}: {desc}\n"
+        schema_instruction += "\nDo NOT add any other fields. If a field is missing, use an empty string or None."
+        current_system_prompt += schema_instruction
+
     user_prompt = f"Here is the HTML content:\n\n{html_snippet}\n\nWrite the parsing code now."
 
     try:
         response = await client.chat.completions.create(
             model="gpt-4o-mini", # Switch to mini for cost efficiency
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": current_system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
             temperature=0.0, # Deterministic output is better for code
