@@ -6,7 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize client. It will automatically use OPENAI_API_KEY env var.
-client = AsyncOpenAI()
+# For OpenRouter, set OPENAI_BASE_URL=https://openrouter.ai/api/v1
+client = AsyncOpenAI(
+    api_key=os.getenv("OPENAI_API_KEY"),
+    base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+)
 
 SYSTEM_PROMPT = """
 You are an expert web scraper. Your goal is to write Python code to extract structured data from HTML.

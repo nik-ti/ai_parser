@@ -43,6 +43,12 @@ The **AI Parser Microservice** is an intelligent web scraping tool that turns an
     ```bash
     echo "OPENAI_API_KEY=sk-your-key" > .env
     ```
+    
+    **Optional - Use OpenRouter**: To use OpenRouter (access to GPT, Claude, Gemini, etc. with one API):
+    ```bash
+    echo "OPENAI_BASE_URL=https://openrouter.ai/api/v1" >> .env
+    ```
+    Then use your OpenRouter API key as `OPENAI_API_KEY`.
 
 3.  **Run with Docker Compose**:
     ```bash
