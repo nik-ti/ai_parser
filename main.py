@@ -38,6 +38,20 @@ async def parse_url(request: UrlRequest):
         if not isinstance(parsed_data, list):
             parsed_data = [parsed_data]
         
+        # 6. Validate and clean garbage extractions
+        for item in parsed_data:
+            if isinstance(item, dict):
+                # Check full_text for detail pages - if it's too short or just repeated chars, clear it
+                if "full_text" in item:
+                    text = item.get("full_text", "")
+                    # Remove if it's just whitespace, repeated chars, or very short
+                    if len(text.strip()) < 50 or len(set(text.replace("\n", "").replace(" ", ""))) < 5:
+                        logger.warning(f"Detected garbage full_text: {text[:50]}... Clearing fields.")
+                        item["full_text"] = ""
+                        item["summary"] = ""
+                        item["images"] = []
+                        item["links"] = []
+        
         # Determine page_type: use override if provided, otherwise infer from data structure
         if request.page_type:
             detected_page_type = request.page_type
