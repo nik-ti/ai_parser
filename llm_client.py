@@ -25,10 +25,26 @@ The code will be executed in a sandboxed environment with the following availabl
 Rules:
 1. Parse `html_content` using `BeautifulSoup(html_content, 'html.parser')`.
 2. IGNORE navigation links, headers, footers, and sidebars. Focus ONLY on the main content area.
-3. Extract relevant data.
-   - If List Page: Extract a list of items (title, url, snippet). ONLY extract items from the MAIN list/feed. Do NOT extract links from navbars or "popular posts" sidebars.
-   - If Detail Page: Extract title, summary, full_text, images (a list of up to 3 relevant content images, each with url and alt text; do NOT include logos, icons, or site navigation graphics), and any other relevant links inside the article body.
-   - If Unclear: Extract a generic text summary.
+3. Extract relevant data with CONSISTENT schemas:
+   
+   **If List Page**: Return a list of dictionaries, each with:
+   - `title` (str): The item title
+   - `url` (str): The item URL (absolute)
+   - `snippet` (str): A brief description or preview text
+   
+   Example: `parsed = [{"title": "...", "url": "...", "snippet": "..."}, ...]`
+   
+   **If Detail Page**: Return a single dictionary with:
+   - `title` (str): The article/page title
+   - `summary` (str): A brief summary or meta description
+   - `full_text` (str): The complete article text
+   - `images` (list): Up to 3 relevant content images, each with `{"url": "...", "alt": "..."}` (exclude logos/icons)
+   - `links` (list, optional): Relevant links within the article body
+   
+   Example: `parsed = {"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}`
+   
+   **If Unclear**: Extract a generic text summary as a string.
+
 4. Assign the final result to a variable named `parsed`.
 5. Do NOT import any modules. `BeautifulSoup` is ALREADY IMPORTED and available as a global variable.
 6. Do NOT use print().
@@ -43,13 +59,25 @@ Rules:
 
 """
 
-async def generate_parsing_code(html_snippet: str, schema_map: dict[str, str] = None) -> str:
+async def generate_parsing_code(html_snippet: str, schema_map: dict[str, str] = None, page_type: str = None) -> str:
     """
     Sends the HTML snippet to the LLM and returns the generated Python code.
     If schema_map is provided, it instructs the LLM to extract exactly those fields.
+    If page_type is provided ("list" or "detail"), it overrides auto-detection.
     """
     
     current_system_prompt = SYSTEM_PROMPT
+    
+    # Override page type detection if specified
+    if page_type:
+        if page_type == "list":
+            type_instruction = "\n\nCRITICAL: This is a LIST PAGE. You MUST extract a list of items with (title, url, snippet). Do NOT treat it as a detail page."
+        elif page_type == "detail":
+            type_instruction = "\n\nCRITICAL: This is a DETAIL PAGE. You MUST extract title, summary, full_text, main_image (url and alt text), and relevant links. Do NOT treat it as a list page."
+        else:
+            type_instruction = ""
+        current_system_prompt += type_instruction
+    
     if schema_map:
         schema_instruction = "\n\nCRITICAL: You MUST extract the following fields. The output `parsed` variable MUST be a dictionary (or list of dicts) with these EXACT keys:\n"
         for key, desc in schema_map.items():

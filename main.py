@@ -27,7 +27,7 @@ async def parse_url(request: UrlRequest):
         
         # 3. Generate Code via LLM
         logger.info("Generating parsing code...")
-        parsing_code = await generate_parsing_code(cleaned_html, schema_map=request.schema_map)
+        parsing_code = await generate_parsing_code(cleaned_html, schema_map=request.schema_map, page_type=request.page_type)
         logger.info(f"Generated Code:\n{parsing_code}")
         
         # 4. Execute Code in Sandbox

@@ -82,7 +82,25 @@ curl -X POST "http://localhost:8000/parse" \
      -d '{"url": "https://news.ycombinator.com"}'
 ```
 
-### 2. Dynamic Schema (Custom Fields)
+**Default Schemas:**
+- **List Page**: Returns `[{"title": "...", "url": "...", "snippet": "..."}, ...]`
+- **Detail Page**: Returns `{"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}`
+
+### 2. Override Page Type
+You can force the parser to treat a page as either a `list` or `detail` page, overriding auto-detection.
+
+```bash
+curl -X POST "http://localhost:8000/parse" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "url": "https://example.com/articles",
+       "page_type": "list"
+     }'
+```
+
+**Valid values**: `"list"` or `"detail"`
+
+### 3. Dynamic Schema (Custom Fields)
 You can enforce a specific output structure by providing a `schema_map`.
 
 ```bash
