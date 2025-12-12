@@ -51,6 +51,11 @@ async def parse_url(request: UrlRequest):
                         item["summary"] = ""
                         item["images"] = []
                         item["links"] = []
+                
+                # Inject URL for detail pages (ensure it's always present)
+                if "full_text" in item or "summary" in item:
+                    if "url" not in item or not item["url"]:
+                        item["url"] = request.url
         
         # Determine page_type: use override if provided, otherwise infer from data structure
         if request.page_type:

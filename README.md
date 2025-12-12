@@ -84,7 +84,7 @@ curl -X POST "http://localhost:8000/parse" \
 
 **Default Schemas:**
 - **List Page**: `data` = `[{"title": "...", "url": "...", "snippet": "..."}, ...]`
-- **Detail Page**: `data` = `[{"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}]`
+- **Detail Page**: `data` = `[{"url": "...", "title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}]`
 
 **Response Format:**
 ```json
