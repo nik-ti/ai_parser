@@ -34,8 +34,26 @@ async def parse_url(request: UrlRequest):
         logger.info("Executing code...")
         parsed_data = execute_parsing_code(parsing_code, cleaned_html, base_url=request.url)
         
+        # 5. Ensure data is always an array and determine page_type
+        if not isinstance(parsed_data, list):
+            parsed_data = [parsed_data]
+        
+        # Determine page_type: use override if provided, otherwise infer from data structure
+        if request.page_type:
+            detected_page_type = request.page_type
+        else:
+            # Infer: if array has multiple items or items have only title/url/snippet, it's a list
+            if len(parsed_data) > 1:
+                detected_page_type = "list"
+            elif len(parsed_data) == 1 and isinstance(parsed_data[0], dict):
+                # Check if it has detail page fields
+                has_detail_fields = any(key in parsed_data[0] for key in ["full_text", "summary"])
+                detected_page_type = "detail" if has_detail_fields else "list"
+            else:
+                detected_page_type = "list"
+        
         logger.info("Parsing successful.")
-        return ParseResponse(ok=True, data=parsed_data)
+        return ParseResponse(ok=True, page_type=detected_page_type, data=parsed_data)
 
     except Exception as e:
         logger.error(f"Error processing request: {e}")

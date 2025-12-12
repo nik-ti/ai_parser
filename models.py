@@ -9,5 +9,6 @@ class UrlRequest(BaseModel):
 
 class ParseResponse(BaseModel):
     ok: bool
-    data: Optional[Any] = None
+    page_type: Optional[Literal["list", "detail"]] = None
+    data: Optional[list] = None  # Always an array
     error: Optional[str] = None

@@ -83,8 +83,18 @@ curl -X POST "http://localhost:8000/parse" \
 ```
 
 **Default Schemas:**
-- **List Page**: Returns `[{"title": "...", "url": "...", "snippet": "..."}, ...]`
-- **Detail Page**: Returns `{"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}`
+- **List Page**: `data` = `[{"title": "...", "url": "...", "snippet": "..."}, ...]`
+- **Detail Page**: `data` = `[{"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}]`
+
+**Response Format:**
+```json
+{
+  "ok": true,
+  "page_type": "list",  // or "detail"
+  "data": [...],  // Always an array
+  "error": null
+}
+```
 
 ### 2. Override Page Type
 You can force the parser to treat a page as either a `list` or `detail` page, overriding auto-detection.

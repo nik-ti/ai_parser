@@ -34,14 +34,14 @@ Rules:
    
    Example: `parsed = [{"title": "...", "url": "...", "snippet": "..."}, ...]`
    
-   **If Detail Page**: Return a single dictionary with:
+   **If Detail Page**: Return a list with a SINGLE dictionary containing:
    - `title` (str): The article/page title
    - `summary` (str): A brief summary or meta description
    - `full_text` (str): The complete article text
    - `images` (list): Up to 3 relevant content images, each with `{"url": "...", "alt": "..."}` (exclude logos/icons)
    - `links` (list, optional): Relevant links within the article body
    
-   Example: `parsed = {"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}`
+   Example: `parsed = [{"title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}]`
    
    **If Unclear**: Extract a generic text summary as a string.
 
