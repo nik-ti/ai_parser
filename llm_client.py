@@ -24,19 +24,27 @@ The code will be executed in a sandboxed environment with the following availabl
 
 Rules:
 1. Parse `html_content` using `BeautifulSoup(html_content, 'html.parser')`.
-2. IGNORE navigation links, headers, footers, and sidebars. Focus ONLY on the main content area.
+2. IGNORE navigation links, headers, footers, sidebars, and "Related Posts" / "More from" sections. Focus ONLY on the MAIN content area.
 3. Extract relevant data with CONSISTENT schemas:
+
+   **Classification Priority**:
+   - First, check for a **Detail Page**. Look for a distinct `<h1>` title and a significant block of text (article body).
+   - If NO dominant article is found, check for a **Use List Page**. Look for a REPEATING pattern of items.
+
+   **If Detail Page**: Return a list with a SINGLE dictionary.
+   - Look for a SINGLE dominant article/body.
+   - Must have `title`, `full_text`.
+   - `full_text` MUST be the MAIN article text (long). Do not just extract the summary.
    
-   **If List Page**: Return a list of dictionaries, each with:
+   **If List Page**: Return a list of dictionaries. 
+   - Look for a REPEATING pattern of items (feed, grid, list). 
+   - Do NOT treat a "Related Articles" sidebar on a detail page as a List Page. 
+   - Each item must have:
    - `title` (str): The item title
    - `url` (str): The item URL (absolute)
    - `snippet` (str): A brief description or preview text
    
    Example: `parsed = [{"title": "...", "url": "...", "snippet": "..."}, ...]`
-   
-   **If Detail Page**: Return a list with a SINGLE dictionary containing:
-   - `url` (str): The page URL (use `base_url` variable)
-   - `title` (str): The article/page title
    - `summary` (str): A brief summary or meta description
    - `full_text` (str): The complete article text
    - `images` (list): Up to 3 relevant content images, each with `{"url": "...", "alt": "..."}` (exclude logos/icons)
@@ -44,7 +52,10 @@ Rules:
    
    Example: `parsed = [{"url": base_url, "title": "...", "summary": "...", "full_text": "...", "images": [...], "links": [...]}]`
    
-   **If Unclear**: Extract a generic text summary as a string.
+   **If Extraction Fails or content matches nothing**:
+   - Return an empty list `[]` for list pages.
+   - Return a dictionary with empty strings `{"title": "", "summary": "", ...}` wrapped in a list for detail pages.
+   - Do NOT raise an error.
 
 4. Assign the final result to a variable named `parsed`.
 5. Do NOT import any modules. `BeautifulSoup` is ALREADY IMPORTED and available as a global variable.

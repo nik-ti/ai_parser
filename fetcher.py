@@ -22,9 +22,17 @@ async def fetch_page_html(url: str) -> str:
                 # Fallback to domcontentloaded + delay
                 logger.warning(f"networkidle failed for {url}: {e}. Falling back to domcontentloaded...")
                 await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-                # Give JS a bit more time to execute
                 await page.wait_for_timeout(2000)
                 logger.info("Loaded with domcontentloaded + 2s delay")
+            
+            # Auto-scroll to trigger lazy loading (scroll down 3 times)
+            logger.info("Auto-scrolling to trigger lazy loading...")
+            for _ in range(3):
+                await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
+                await page.wait_for_timeout(1000) # Wait for content to load
+            
+            # Scroll back to top to ensure we capture everything linearly if needed (optional, but good practice)
+            # await page.evaluate("window.scrollTo(0, 0)")
             
             content = await page.content()
             return content

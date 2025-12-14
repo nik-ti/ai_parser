@@ -39,10 +39,21 @@ async def parse_url(request: UrlRequest):
             parsed_data = [parsed_data]
         
         # 6. Validate and clean garbage extractions
+        # Detect page type first so we know what validation rules to apply
+        detected_page_type = request.page_type
+        if not detected_page_type:
+             if len(parsed_data) > 1:
+                detected_page_type = "list"
+             elif len(parsed_data) == 1 and isinstance(parsed_data[0], dict):
+                has_detail_fields = any(key in parsed_data[0] for key in ["full_text", "summary"])
+                detected_page_type = "detail" if has_detail_fields else "list"
+             else:
+                detected_page_type = "list"
+
         for item in parsed_data:
             if isinstance(item, dict):
-                # Check full_text for detail pages - if it's too short or just repeated chars, clear it
-                if "full_text" in item:
+                # ONLY validate full_text if it's a DETAIL page
+                if detected_page_type == "detail" and "full_text" in item:
                     text = item.get("full_text", "")
                     # Remove if it's just whitespace, repeated chars, or very short
                     if len(text.strip()) < 50 or len(set(text.replace("\n", "").replace(" ", ""))) < 5:
@@ -53,25 +64,17 @@ async def parse_url(request: UrlRequest):
                         item["links"] = []
                 
                 # Inject URL for detail pages (ensure it's always present)
-                if "full_text" in item or "summary" in item:
-                    if "url" not in item or not item["url"]:
+                if detected_page_type == "detail" and ("full_text" in item or "summary" in item):
+                     if "url" not in item or not item["url"]:
                         item["url"] = request.url
+
+        # Check if we ended up with empty data after cleaning
+        if detected_page_type == "detail" and len(parsed_data) == 1:
+             # If detail page became empty/invalid, we still return the structure but maybe flag it?
+             # For now, we return what we have. API consumer checks for empty fields.
+             pass
         
-        # Determine page_type: use override if provided, otherwise infer from data structure
-        if request.page_type:
-            detected_page_type = request.page_type
-        else:
-            # Infer: if array has multiple items or items have only title/url/snippet, it's a list
-            if len(parsed_data) > 1:
-                detected_page_type = "list"
-            elif len(parsed_data) == 1 and isinstance(parsed_data[0], dict):
-                # Check if it has detail page fields
-                has_detail_fields = any(key in parsed_data[0] for key in ["full_text", "summary"])
-                detected_page_type = "detail" if has_detail_fields else "list"
-            else:
-                detected_page_type = "list"
-        
-        logger.info("Parsing successful.")
+        logger.info(f"Parsing successful. Type: {detected_page_type}")
         return ParseResponse(ok=True, page_type=detected_page_type, data=parsed_data)
 
     except Exception as e:
