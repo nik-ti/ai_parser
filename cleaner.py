@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup, Comment
 
-def clean_html(html_content: str, max_length: int = 100000) -> str:
+def clean_html(html_content: str, max_length: int = 200000) -> str:
     """
     Cleans the HTML by removing scripts, styles, and other non-content elements.
     Truncates the result to max_length to save tokens.
@@ -10,6 +10,17 @@ def clean_html(html_content: str, max_length: int = 100000) -> str:
     # Remove unwanted tags
     for tag in soup(["script", "style", "svg", "noscript", "iframe", "object", "embed", "meta", "link", "nav", "header", "footer", "aside"]):
         tag.decompose()
+        
+    # Remove common clutter by ID/Class (Aggressive Cleaning)
+    clutter_selectors = [
+        "#menu", "#nav", "#header", "#footer", "#sidebar", "#sidebar_right", "#header_boundary", 
+        ".hidden", ".modal", ".popup", ".cookie", ".ad", ".advertisement", ".social-share",
+        "div[id*='menu']", "div[class*='menu']", "div[id*='nav']", "div[class*='nav']"
+    ]
+    for selector in clutter_selectors:
+        for tag in soup.select(selector):
+            tag.decompose()
+
 
     # Remove comments
     for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
