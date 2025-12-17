@@ -1,106 +1,80 @@
 import os
+import json
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
 
 # Load env vars from .env file
 load_dotenv()
 
-# Initialize client. It will automatically use OPENAI_API_KEY env var.
+# Initialize client
 client = AsyncOpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 )
 
-SYSTEM_PROMPT = """
-You are an expert web scraper. The input is the **MARKDOWN** content of a webpage.
-Your goal is to extract structured data into a SINGLE Python dictionary matching the `ParsedContent` schema.
+SYSTEM_PROMPT = """You are an expert web content extractor. Extract structured data from the markdown content.
 
-Input: `markdown_content` (str)
-Output: Assign the result to a variable named `parsed`.
-
-**Schema Structure**:
-```python
-parsed = {
+**Output JSON Schema**:
+{
     "type": "detail" | "list" | "unknown",
-    "title": "Page Title or Main Headline",
-    "summary": "Brief summary of content",
-    "full_text": "Full article body text (if detail page)",
-    "published_date": "YYYY-MM-DD (if found)",
-    "images": [
-        {"url": "...", "alt": "...", "description": "..."}
-    ],
-    "items": [ # For list pages ONLY
-        {"title": "...", "url": "...", "snippet": "...", "published_date": "..."}
-    ]
+    "title": "Page title or headline",
+    "summary": "Brief summary (1-2 sentences)",
+    "full_text": "Complete article text (detail pages only)",
+    "published_date": "YYYY-MM-DD format if found",
+    "images": [{"url": "absolute URL", "alt": "alt text", "description": "context"}],
+    "items": [{"title": "", "url": "", "snippet": "", "published_date": ""}]  // list pages only
 }
-```
 
 **Rules**:
-1. **Detect Type**:
-   - If it's a single article/news post -> "detail".
-   - If it's a feed/index/search results -> "list".
-2. **Detail Page**:
-   - Extract `full_text` (all main content).
-   - Extract ALL relevant images into `images`. Exclude icons/avatars/logos.
-   - `items` should be empty `[]`.
-3. **List Page**:
-   - Extract up to 20 items into `items`.
-   - `full_text` should be None.
-   - `images` can be empty or contain main feed images.
-4. **Images**:
-   - MUST be absolute URLs. Use `urljoin(base_url, ...)` if needed.
-   - Capture `alt` text and try to infer a `description` from context.
-5. **Safety**:
-   - `parsed` MUST be defined.
-   - Do NOT use imports (markdown, re, json are allowed if built-in, but prefer simple string ops).
-   - `urljoin` is available globally.
-"""
+1. **Type Detection**: "detail" for single articles, "list" for feeds/indexes
+2. **Detail Pages**: Extract full_text (all content), images (exclude logos/icons), items=[]
+3. **List Pages**: Extract items (up to 20), full_text=null, minimal images
+4. **Images**: Must be absolute URLs, capture alt + infer description from context
+5. **Quality**: Prefer complete extraction over partial data
 
-async def generate_parsing_code(markdown_snippet: str, schema_map: dict[str, str] = None, page_type: str = None) -> str:
+Return ONLY valid JSON matching this schema."""
+
+async def extract_content(markdown_content: str, base_url: str) -> dict:
     """
-    Sends the Markdown snippet to the LLM and returns the generated Python code.
+    Directly extract structured content using LLM with JSON mode.
+    Much faster than code generation approach.
     """
+    # Truncate markdown to avoid token limits (keep first 8000 tokens ~32k chars)
+    if len(markdown_content) > 32000:
+        markdown_content = markdown_content[:32000] + "\n\n[Content truncated for processing]"
     
-    current_system_prompt = SYSTEM_PROMPT
-    
-    if page_type:
-        current_system_prompt += f"\n\nCRITICAL: User specified page_type='{page_type}'. Strict enforcement."
-
-    if schema_map:
-        # Schema map is less relevant now with strict stricture, but we can add as "custom fields" if we wanted
-        # For now, we stick to the core schema to satisfy "consistent schema" requirement.
-        pass
-
-    user_prompt = f"Here is the MARKDOWN content:\n\n{markdown_snippet}\n\nWrite the parsing code now."
-
     try:
         response = await client.chat.completions.create(
-            model="gpt-4o-mini", 
+            model=os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini"),
             messages=[
-                {"role": "system", "content": current_system_prompt},
-                {"role": "user", "content": user_prompt}
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"Base URL: {base_url}\n\nMarkdown Content:\n{markdown_content}"}
             ],
-            temperature=0.0,
+            response_format={"type": "json_object"},
+            temperature=0.1,
+            max_tokens=4000
         )
         
-        code = response.choices[0].message.content.strip()
+        result = json.loads(response.choices[0].message.content)
         
-        # Cleanup code fences
-        if code.startswith("```python"): code = code[9:]
-        elif code.startswith("```"): code = code[3:]
-        if code.endswith("```"): code = code[:-3]
+        # Ensure required fields exist
+        if "type" not in result:
+            result["type"] = "unknown"
+        if "images" not in result:
+            result["images"] = []
+        if "items" not in result:
+            result["items"] = []
+            
+        return result
         
-        # Basic sanitization
-        lines = code.split('\n')
-        safe_lines = [line for line in lines if not line.strip().startswith(('import ', 'from ', 'pip '))]
-        
-        # Allow 'import re' or 'import json' if explicitly needed? 
-        # Sandbox usually blocks them unless enabled. 
-        # Better to rely on standard string ops or the pre-imported env.
-        # But regex is very useful. Let's assume re is NOT available unless passed in sandbox.
-        # Check sandbox.py next.
-        
-        return '\n'.join(safe_lines).strip()
-
     except Exception as e:
-        raise RuntimeError(f"LLM generation failed: {e}")
+        # Return minimal valid structure on error
+        return {
+            "type": "unknown",
+            "title": "Error extracting content",
+            "summary": str(e),
+            "full_text": None,
+            "published_date": None,
+            "images": [],
+            "items": []
+        }

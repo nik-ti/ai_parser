@@ -6,3 +6,4 @@ openai
 pydantic
 python-dotenv
 markdownify
+readability-lxml

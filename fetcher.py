@@ -55,12 +55,32 @@ async def fetch_page_html(url: str) -> str:
     async with _semaphore:
         page = None
         try:
-            page = await _browser.new_page()
+            # Create context with realistic settings to avoid bot detection
+            context = await _browser.new_context(
+                viewport={'width': 1920, 'height': 1080},
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                locale='en-US',
+                timezone_id='America/New_York',
+                permissions=['geolocation'],
+                extra_http_headers={
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'DNT': '1',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1'
+                }
+            )
             
-            # Set a realistic User-Agent to avoid simple blocking
-            await page.set_extra_http_headers({
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-            })
+            page = await context.new_page()
+            
+            # Mask automation indicators
+            await page.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+                Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
+                window.chrome = {runtime: {}};
+            """)
 
             # Block unnecessary resources for speed
             await page.route("**/*", lambda route: route.abort() 
@@ -88,3 +108,5 @@ async def fetch_page_html(url: str) -> str:
         finally:
             if page:
                 await page.close()
+            if 'context' in locals():
+                await context.close()
