@@ -1,188 +1,600 @@
 [
   {
     "url": "https://www.whitehouse.gov/presidential-actions/2025/12/eliminating-state-law-obstruction-of-national-artificial-intelligence-policy/",
-    "status": "error",
-    "duration": 0.016849517822265625,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 37.92553448677063,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "ENSURING A NATIONAL POLICY FRAMEWORK FOR ARTIFICIAL INTELLIGENCE",
+        "summary": "A national policy framework for AI to ensure U.S. leadership and security.",
+        "full_text": "Ensuring a National Policy Framework for Artificial Intelligence \u2013 The White House\n\n[Skip to content](#wp--skip-link--target)\n\n[Presidential Actions](https://www.whitehouse.gov/presidential-actions/)\n\n# ENSURING A NATIONAL POLICY FRAMEWORK FOR ARTIFICIAL INTELLIGENCE\n\n[Executive Orders](https://www.whitehouse.gov/presidential-actions/executive-orders/)\n\nDecember 11, 2025\n\nBy the authority vested in me as President by the Constitution and the laws of the United States of America, it is hereby ordered:\n\nSection 1.\u00a0 Purpose.\u00a0 United States leadership in Artificial Intelligence (AI) will promote United States national and economic security and dominance across many domains.\u00a0 Pursuant to Executive Order 14179 of January 23, 2025 (Removing Barriers to American Leadership in Artificial Intelligence), I revoked my predecessor\u2019s attempt to paralyze this industry and directed my Administration to remove barriers to United States AI leadership.\u00a0 My Administration has already done tremendous work to advance that objective, including by updating existing Federal regulatory frameworks to remove barriers to and encourage adoption of AI applications across sectors.\u00a0 These efforts have already delivered tremendous benefits to the American people and led to trillions of dollars of investments across the country. \u00a0But we remain in the earliest days of this technological revolution and are in a race with adversaries for supremacy within it.\n\nTo win, United States AI companies must be free to innovate without cumbersome regulation. \u00a0But excessive State regulation thwarts this imperative. \u00a0First, State-by-State regulation by definition creates a patchwork of 50 different regulatory regimes that makes compliance more challenging, particularly for start-ups. \u00a0Second, State laws are increasingly responsible for requiring entities to embed ideological bias within models. \u00a0For example, a new Colorado law banning \u201calgorithmic discrimination\u201d may even force AI models to produce false results in order to avoid a \u201cdifferential treatment or impact\u201d on protected groups. \u00a0Third, State laws sometimes impermissibly regulate beyond State borders, impinging on interstate commerce.\n\nMy Administration must act with the Congress to ensure that there is a minimally burdensome national standard \u2014 not 50 discordant State ones. \u00a0The resulting framework must forbid State laws that conflict with the policy set forth in this order. \u00a0That framework should also ensure that children are protected, censorship is prevented, copyrights are respected, and communities are safeguarded. \u00a0A carefully crafted national framework can ensure that the United States wins the AI race, as we must.\n\nUntil such a national standard exists, however, it is imperative that my Administration takes action to check the most onerous and excessive laws emerging from the States that threaten to stymie innovation.\n\nSec. 2.\u00a0 Policy.\u00a0 It is the policy of the United States to sustain and enhance the United States\u2019 global AI dominance through a minimally burdensome national policy framework for AI.\n\nSec. 3.\u00a0 AI Litigation Task Force.\u00a0 Within 30 days of the date of this order, the Attorney General shall establish an AI Litigation Task Force (Task Force) whose sole responsibility shall be to challenge State AI laws inconsistent with the policy set forth in section 2 of this order, including on grounds that such laws unconstitutionally regulate interstate commerce, are preempted by existing Federal regulations, or are otherwise unlawful in the Attorney General\u2019s judgment, including, if appropriate, those laws identified pursuant to section 4 of this order.\u00a0 The Task Force shall consult from time to time with the Special Advisor for AI and Crypto, the Assistant to the President for Science and Technology, the Assistant to the President for Economic Policy, and the Assistant to the President and Counsel to the President regarding the emergence of specific State AI laws that warrant challenge.\n\nSec. 4.\u00a0 Evaluation of State AI Laws.\u00a0 Within 90 days of the date of this order, the Secretary of Commerce, consistent with the Secretary\u2019s authorities under 47 U.S.C. 902(b), shall, in consultation with the Special Advisor for AI and Crypto, the Assistant to the President for Economic Policy, the Assistant to the President for Science and Technology, and the Assistant to the President and Counsel to the President, publish an evaluation of existing State AI laws that identifies onerous laws that conflict with the policy set forth in section 2 of this order, as well as laws that should be referred to the Task Force established pursuant to section 3 of this order.\u00a0 That evaluation of State AI laws shall, at a minimum, identify laws that require AI models to alter their truthful outputs, or that may compel AI developers or deployers to disclose or report information in a manner that would violate the First Amendment or any other provision of the Constitution. \u00a0The evaluation may additionally identify State laws that promote AI innovation consistent with the policy set forth in section 2 of this order.\n\nSec. 5.\u00a0 Restrictions on State Funding.\u00a0 (a)\u00a0 Within 90 days of the date of this order, the Secretary of Commerce, through the Assistant Secretary of Commerce for Communications and Information, shall issue a Policy Notice specifying the conditions under which States may be eligible for remaining funding under the Broadband Equity Access and Deployment (BEAD) Program that was saved through my Administration\u2019s \u201cBenefit of the Bargain\u201d reforms, consistent with 47 U.S.C. 1702(e)-(f).\u00a0 That Policy Notice must provide that States with onerous AI laws identified pursuant to section 4 of this order are ineligible for non-deployment funds, to the maximum extent allowed by Federal law.\u00a0 The Policy Notice must also describe how a fragmented State regulatory landscape for AI threatens to undermine BEAD-funded deployments, the growth of AI applications reliant on high-speed networks, and BEAD\u2019s mission of delivering universal, high-speed connectivity.\n\n(b)\u00a0 Executive departments and agencies (agencies) shall assess their discretionary grant programs in consultation with the Special Advisor for AI and Crypto and determine whether agencies may condition such grants on States either not enacting an AI law that conflicts with the policy of this order, including any AI law identified pursuant to section 4 or challenged pursuant to section 3 of this order, or, for those States that have enacted such laws, on those States entering into a binding agreement with the relevant agency not to enforce any such laws during the performance period in which it receives the discretionary funding.\n\nSec. 6.\u00a0 Federal Reporting and Disclosure Standard.\u00a0 Within 90 days of the publication of the identification specified in section 4 of this order, the Chairman of the Federal Communications Commission shall, in consultation with the Special Advisor for AI and Crypto, initiate a proceeding to determine whether to adopt a Federal reporting and disclosure standard for AI models that preempts conflicting State laws.\n\nSec. 7.\u00a0 Preemption of State Laws Mandating Deceptive Conduct in AI Models.\u00a0 Within 90 days of the date of this order, the Chairman of the Federal Trade Commission shall, in consultation with the Special Advisor for AI and Crypto, issue a policy statement on the application of the Federal Trade Commission Act\u2019s prohibition on unfair and deceptive acts or practices under 15 U.S.C. 45 to AI models.\u00a0 That policy statement must explain the circumstances under which State laws that require alterations to the truthful outputs of AI models are preempted by the Federal Trade Commission Act\u2019s prohibition on engaging in deceptive acts or practices affecting commerce.\n\nSec. 8.\u00a0 Legislation. \u00a0(a) \u00a0The Special Advisor for AI and Crypto and the Assistant to the President for Science and Technology shall jointly prepare a legislative recommendation establishing a uniform Federal policy framework for AI that preempts State AI laws that conflict with the policy set forth in this order.\n\n(b) \u00a0The legislative recommendation called for in subsection (a) of this section shall not propose preempting otherwise lawful State AI laws relating to:\n\n(i) \u00a0\u00a0\u00a0child safety protections;\n\n(ii) \u00a0\u00a0AI compute and data center infrastructure, other than generally applicable permitting reforms;\n\n(iii) \u00a0State government procurement and use of AI; and\n\n(iv) \u00a0\u00a0other topics as shall be determined.\n\nSec. 9.\u00a0 General Provisions.\u00a0 (a) \u00a0Nothing in this order shall be construed to impair or otherwise affect:\n\n(i) \u00a0\u00a0the authority granted by law to an executive department or agency, or the head thereof; or\n\n(ii) \u00a0the functions of the Director of the Office of Management and Budget relating to budgetary, administrative, or legislative proposals.\n\n(b) \u00a0This order shall be implemented consistent with applicable law and subject to the availability of appropriations.\n\n(c) \u00a0This order is not intended to, and does not, create any right or benefit, substantive or procedural, enforceable at law or in equity by any party against the United States, its departments, agencies, or entities, its officers, employees, or agents, or any other person.\n\n(d) \u00a0The costs for publication of this order shall be borne by the Department of Commerce.\n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 DONALD J. TRUMP\n\nTHE WHITE HOUSE,\n\n\u00a0\u00a0\u00a0 December 11, 2025.",
+        "published_date": "2025-12-11",
+        "images": [
+          {
+            "url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/Wire-Banner.jpg",
+            "alt": "",
+            "description": "Banner image related to the AI policy framework."
+          },
+          {
+            "url": "https://www.whitehouse.gov/wp-content/uploads/2025/09/wire-banner-mobile.jpg",
+            "alt": "",
+            "description": "Mobile version of the banner image related to the AI policy framework."
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.nature.com/articles/d41586-025-04053-w",
-    "status": "error",
-    "duration": 0.013498306274414062,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 41.12721133232117,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "AI is transforming the economy \u2014 understanding its impact requires both data and imagination",
+        "summary": "This article discusses the transformative impact of AI on the economy, exploring predictions and the need for both data and imagination to understand its effects.",
+        "full_text": "AI is transforming the economy \u2014 understanding its impact requires both data and imagination\n\nHow will artificial intelligence reshape the global economy? Some economists predict only a small boost \u2014 around a 0.9% increase in gross domestic product over the next ten years. Others foresee a revolution that might add between US$17 trillion and $26 trillion to annual global economic output and automate up to half of today\u2019s jobs by 2045. But even before the full impacts materialize, beliefs about our AI future affect the economy today \u2014 steering young people\u2019s career choices, guiding government policy and driving vast investment flows into semiconductors and other components of data centres.\n\nGiven the high stakes, many researchers and policymakers are increasingly attempting to precisely quantify the causal impact of AI through natural experiments and randomized controlled trials. In such studies, one group gains access to an AI tool while another continues under normal conditions; other factors are held fixed. Researchers can then analyse outcomes such as productivity, satisfaction and learning.\n\nYet, when applied to AI, this type of evidence faces two challenges. First, by the time they are published, causal estimates of AI\u2019s effects can be outdated. For instance, one study found that call-centre workers handled queries 15% faster when using 2020 AI tools. Another showed that software developers with access to coding assistants in 2022\u201323 completed 26% more tasks than did those without such tools. But AI capabilities are advancing at an astounding pace. For example, since ChatGPT\u2019s release in 2022, AI tools can now correctly handle three times as many simulated customer-support chats on their own as they could before. The better, cheaper AI of tomorrow will produce different economic effects.\n\nSecond, carefully controlled studies do not capture the wider ripple effects that accompany AI adoption. For example, the studies involving call-centre workers and software developers found that when organizational structure remained fixed, the less-experienced workers benefited most from AI assistance. But in the real world, managers might respond by reorganizing work or even replacing some of the less-experienced workers with AI systems. If they do, the effect on those individuals could be the opposite of that estimated in controlled studies. Indeed, payroll data suggest that employment of younger workers has declined since 2022, particularly in occupations that include tasks that AI excels at, such as customer service and software development. However, researchers are still trying to understand how much of the pattern is attributable to AI technology.\n\nCarefully controlled studies are like flashing a bright, narrow spotlight: they are only part of the illumination needed to understand how society is adapting to AI. With so much still unknown about its broader economic and social effects, popular debate often slips into speculative, science-fiction narratives of a world dominated by machine intelligence.\n\nSocial science could help to navigate these uncertainties, but it would require both imagination and grounding. Here, I describe three complementary approaches that can guide researchers working in this rapidly evolving field.\n\nOne approach is to create what economist Jean Tirole calls social science fiction \u2014 speculation about the future that remains rooted in fundamental economic principles and behavioural theories. Rather than relying on imagination alone, this kind of analysis uses models to explore how technologies might interact with market forces.\n\nFor example, in 2019, researchers modelled how self-driving cars might reshape cities and found that the vehicles could make traffic worse. Because passengers in self-driving cars can relax, read or watch videos, the personal cost of time spent in traffic falls. But as more people choose to travel by car, they impose greater congestion on others. Whether that leads to inefficiency will depend on whether governments implement policies such as congestion pricing to correct the \u2018externality\u2019.\n\nAnother illustration of imaginative, yet grounded, social science comes from research on how market forces might limit AI\u2019s disruptive potential. Studies suggest that, as automation boosts productivity in some tasks, other activities that cannot easily be automated \u2014 such as creative direction or vetting final outputs \u2014 will grow in relative value. That might raise demand for labour, and therefore wages, in such jobs. These opportunities could cushion some of the disruptive effects of automation. But it might also deepen inequalities between people who thrive in these roles and those who do not.\n\nMore thought experiments like these can help policymakers to imagine how the economy might shift in a more disciplined manner. Such experiments can identify which indicators to monitor and provide a head start on planning the policies that might be needed. Other open problems include understanding the incentives to create knowledge for AI systems, and how innovation and economic growth might be affected if AI labs remain competitive with each other, or if one pulls ahead as a clear market leader.\n\nAs well as theory, policymakers will also need evidence to understand how the economy will change. Different types of information need to combine to form a more complete picture.\n\nOne common approach to assessing AI capabilities is benchmarking \u2014 testing the systems on standardized tasks, much as exams do. Benchmarks can assess an AI system\u2019s ability to solve mathematics problems, respond to customer-support requests or diagnose medical conditions. However, benchmark scores often diverge from performance in real-world settings, where tasks are noisier, more complex and context-dependent. For example, a medical AI system might perform well on textbook-style clinical questions, but could misinterpret communications from patients if they omit key details. More research is needed to design benchmarks that better capture real-world performance.\n\nIf AI is anywhere near as transformative as many expect, its effects will show up in numerous indicators that can be monitored in real time, such as tracking which tasks people use AI for. These usage data show, for instance, that AI chatbots are often used for software development, suggesting that this sector might feel the earliest effects of AI adoption. Other indicators include employment, job openings and whether firms that integrate AI earn higher profits and expand. However, there will be questions that such descriptive indicators alone cannot answer. For that reason, researchers might still attempt to measure the causal impact of AI: that is, whether AI causes improvements, rather than merely being adopted by high performers who also happen to be more willing to try new technologies.\n\nEstimating AI\u2019s causal effects is difficult because the technology is evolving and organizations are adapting. But this challenge is not unique to AI. Similar issues arise when evaluating how any pilot programme \u2014 whether in business, education or public health \u2014 will perform once it is expanded. When scaled up, programmes often encounter fresh constraints or trigger wider economic fallouts. Economists have developed methods to anticipate these scaling effects when designing experiments, such as replicating the conditions of the eventual implementer \u2014 for example, a government agency \u2014 rather than those of the more agile, well-resourced organizations that typically run pilots. Researchers studying AI can similarly attempt to anticipate future changes when designing experiments.\n\nOne important parameter is the cost of running AI models, which has been falling. Researchers can model how cost declines might affect the viability of different applications. For example, one study examined AI usage by teachers in Sierra Leone who pay for Internet access by the megabyte. In early 2022, querying an AI chatbot was 12 times more expensive than loading a standard web page; by 2025, thanks to falling compute costs and the bandwidth efficiency of AI, using the technology had become 98% cheaper than accessing a web page. This cost advantage suggests that AI might expand access to information in low-resource settings where the Internet is expensive.\n\nThe capabilities of AI are another crucial determinant of its impact. It is hard to predict how these will evolve, but researchers can try to anticipate how humans might respond to more-powerful systems. Even as technology advances, human behaviour tends to follow stable patterns \u2014 in terms of how people develop trust, how they respond to incentives and how they adapt to automation.",
+        "published_date": "2025-12-16",
+        "images": [
+          {
+            "url": "https://media.nature.com/w767/magazine-assets/d41586-025-04053-w/d41586-025-04053-w_51821790.jpg",
+            "alt": "Conceptual illustration showing wired AI heads contained in jars for analysis/study.",
+            "description": "Illustration depicting AI heads in jars, symbolizing the analysis and study of artificial intelligence."
+          },
+          {
+            "url": "https://media.nature.com/w400/magazine-assets/d41586-025-04053-w/d41586-025-04053-w_51430592.jpg",
+            "alt": "Why evaluating the impact of AI needs to start now",
+            "description": "An image related to the evaluation of AI's impact on society."
+          },
+          {
+            "url": "https://media.nature.com/w400/magazine-assets/d41586-025-04053-w/d41586-025-04053-w_50677686.jpg",
+            "alt": "Can AI help beat poverty? Researchers test ways to aid the poorest people",
+            "description": "An image illustrating the potential of AI in addressing poverty."
+          },
+          {
+            "url": "https://media.nature.com/w400/magazine-assets/d41586-025-04053-w/d41586-025-04053-w_51718988.jpg",
+            "alt": "AI can supercharge inequality \u2014 unless the public learns to control it",
+            "description": "An image discussing the implications of AI on inequality."
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.artificialintelligence-news.com/",
-    "status": "error",
-    "duration": 0.012194395065307617,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 6.403706073760986,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "403 - Forbidden",
+        "summary": "Access to this page is forbidden.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.nytimes.com/2025/12/15/technology/ai-risks-debt.html",
-    "status": "error",
-    "duration": 0.011831283569335938,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 4.218180179595947,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "nytimes.com",
+        "summary": "The content is not available for parsing.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://medium.com/@social_57513/ai-this-week-what-really-changed-between-december-8-14-2025-c987b955428e",
-    "status": "error",
-    "duration": 0.010811328887939453,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.05121159553528,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://amiko.consulting/en/the-ai-revolution-in-december-2025-latest-trends-changing-the-world-and-potential-applications-in-manufacturing/",
-    "status": "error",
-    "duration": 0.004221439361572266,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 19.21858286857605,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "The AI Revolution in December 2025: Latest Trends Changing the World and Potential Applications in Manufacturing",
+        "summary": "An in-depth look at the latest trends in AI and their potential applications in the manufacturing industry as of December 2025.",
+        "full_text": "In December 2025, the race to develop AI entered a new dimension: OpenAI, Google, and China\u2019s DeepSeek. This is not a mere coincidence. Furthermore, the signing of an executive order by President Trump on AI regulation confirms that this technological innovation has been placed at the center of the nation\u2019s strategy. We will organize this turbulent week, in which technology and politics are intricately intertwined and accelerating, and take an in-depth look at the new opportunities and threats facing Japan\u2019s manufacturing industry.\n\n---\n\nOn December 11, OpenAI broke its silence and officially announced **GPT-5.2**. Defined by CEO Sam Altman as \u201cthe world\u2019s most advanced model for professional work,\u201d the model goes beyond chatbots and focuses on the ability to be an \u201cAI agent\u201d that operates autonomously for extended periods of time.\n\nNotably, the impact on practice is significant: ChatGPT Enterprise users report an average reduction of 40-60 minutes per day, and heavy users report a reduction of more than 10 hours per week.\n\nThe characteristics of GPT-5.2 bring the following innovations to the manufacturing workplace: Advanced Quality Control and Defect Detection, Dynamic Optimization of Production Planning, Automatic generation and multilingualization of technical documents, and Implementing a predictive maintenance system.\n\nFollowing the announcement of Gemini 3 on November 18, Google introduced an additional inference-specific Gemini 3 Deep Think mode in early December. This rewrote the industry standard in all aspects of reasoning, multimodal comprehension, and coding.\n\nA stone thrown by China\u2019s DeepSeek in early December shook the industry: the release of DeepSeek-V3.2, with 68.5 billion parameters, under the MIT license. This move has had such an impact that it evokes a \u201ccode red\u201d (emergency) for OpenAI, which continues to develop in a closed manner.\n\nIn December, OpenAI, Anthropic, Block, and others joined forces to form the Agentic AI Foundation (AAIF) under the Linux Foundation umbrella. This is a historic effort to create a \u201ccommon language\u201d for AI agents to talk and collaborate with each other.\n\nAWS announced the Nova 2 model family and Frontier Agents at re:Invent 2025. It presented a comprehensive stack for implementing agent AI at the industrial level.\n\nThe National AI Policy Framework Presidential Decree, signed on December 11, aims to unify regulations and protect industries in the United States.\n\nThe second week of December 2025 will be remembered as the decisive moment in which AI has broken out of its \u201cmagical experimental technology\u201d and into a \u201creliable industrial machine.\u201d The new standards set by OpenAI, Google, and DeepSeek have reached a level from which there is no turning back.",
+        "published_date": "2025-12-13",
+        "images": [
+          {
+            "url": "https://amiko.consulting/wp-content/uploads/2025/06/Generated-Image-June-02-2025-6_36PM.jpeg",
+            "alt": "Generated Image",
+            "description": "An image generated related to AI applications in manufacturing."
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.itu.int/hub/2025/12/un-working-group-launches-new-ai-resource-hub/",
-    "status": "error",
-    "duration": 0.004029512405395508,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.015618324279785,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.marketingprofs.com/opinions/2025/54114/ai-update-december-12-2025-ai-news-and-views-from-the-past-week",
-    "status": "error",
-    "duration": 0.003922224044799805,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 43.50099277496338,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "Artificial Intelligence - AI Update, December 12, 2025: AI News and Views From the Past Week",
+        "summary": "AI News and Views From the Past Week",
+        "full_text": "This website uses cookies to ensure you get the best experience. The cookie law requires us to let you know that we use cookies for personalization, website traffic analysis, 3rd party tracking, and website functionality. And yeah, we're disappointed that the cookie law doesn't deliver actual cookies, too.",
+        "published_date": "2025-12-12",
+        "images": [
+          {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAjCAYAAADrJzjpAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAztJREFUeNrMWL9v01AQtkOlbO5eKTvC3ZComr0C5hRlY4iSHdI/oMofUCUDEoOr7hFlrqvuLmFgqhG72ZjqLRt36feiF/N+2I7tcNLVSe34fXfv7rt75zolxfO8Ll180hekHUlNkpI+kCakP0njNE2jMuu7BYB6dHlL+pr0jVOthKS3pDdkSFoJcHj2HWnfaUbmpF9sO+EaAPO2T0m7zm6EgZ+TAbHq5jMN6DO6XOWI2TqF137fbred5XJ5b/Q44vhqh142eX8gx7+bAf0VTNGkBEhMH4mvcxqHTE+Al4FPG0xA4cWPhCNR7PpMw1whPT9YAwdzXDcEmD32gQCEGsrl/BoZfs8hE7bwZdxgWLzSgGYPf7eAdmCY48LKXzUDjuHluCLaPdqjP4c1h8UFAQ4MtHtWhipbBTzGiXTASp9PUaZtZfxEBZpzinRREvRK9tDwGAGITF678akcR9jmIdjIw+0ERkaa5JtV0Os8ClZZWKpkih7iMktfEigBfq5qlOj+CB72tg0/kuerkk9ldd+SHG3Sl5zx9KxP+ofK8IYB9D0m/UG6zADm5z9z+cZ7tpVP3ALIBeiuYNVk4JcGD+fh5KKSIG9SpkOfaYqvKPleCea4Ea2o1LePK27SeJ0eYiVm4COR+VuAb6La9uDgLjuohV3tCEt4K0B//4vECA+BiRsx55+Sz6xByuDPYekuvczF60QwGcKwLwPvI0xkzln1Ffzjhg1IsSb3NBeZeyMRxq5Udjf6XQ1P13FQ3jgw0/Jzw/pTOPXAlf9hA585QB9DD0syEY8p7jGiCC3rMcaJWEcA58RcZLhyoDukWoxx8HJfkWCp1C4UeW+2EVu1IKLkXysqZ4Dk2EmCIucmClzcB81d6aE7zZayAUFTBgDLUHOMjAjGafbMKce6blBza4vHkmA78OzQ0Hak4PNENZ6wgRcviBC3nFwPRXcDQH0kdzdHj7SunNpJFs5+s4JMIVhCJPfvzH0f79svMf6IQRaJdQQHj0xq5Oy8zggURcg8O5QobtzwZCsXIbgFYnKIHahrnhijv881anZL0pWonP4WhsTIi29Ogbl4aeCWqnlsCQEG+1i0KqvkrwADAA4ohyFmUvzrAAAAAElFTkSuQmCC",
+            "alt": "logo",
+            "description": "Logo of the website"
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://fortune.com/2025/12/16/google-researchers-ai-agents-multi-agent-getting-them-to-work/",
-    "status": "error",
-    "duration": 0.002852916717529297,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 10.361518144607544,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "Google researchers figure how to get AI agents to work better",
+        "summary": "Brief summary of content",
+        "full_text": "Google researchers figure how to get AI agents to work better.",
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.coindesk.com/markets/2025/12/16/crypto-markets-today-bitcoin-ether-extend-pullback-amid-thin-liquidity-macro-jitters",
-    "status": "error",
-    "duration": 0.002672433853149414,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.02284073829651,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.youtube.com/watch?v=aYczyMwa-AI",
-    "status": "error",
-    "duration": 0.002710580825805664,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 20.654255628585815,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "Bitcoin on Track for 4th Down Year, JPMorgan Steps Further Into Crypto | Bloomberg Crypto 12/16/2025",
+        "summary": "Bloomberg Crypto covers the people, transactions, and technology shaping the world of decentralized finance.",
+        "full_text": "\"Bloomberg Crypto\" covers the people, transactions, and technology shaping the world of decentralized finance. Today's guests: Twenty On Capital CEO Jack Mallers and FG Nexus Digital Assets CEP Maja Vujinovic. CORRECT: The live airing of this show misattributed who won trust bank approval. The banner has been corrected to say BitGo and four other firms were approved.",
+        "published_date": "2025-12-16",
+        "images": [
+          {
+            "url": "https://yt3.ggpht.com/4-w44catDebzaDSUWgereql0G5_z5o7VpJXuIYL_eZ3H1vXy0lTmrole9V500jTUXCnQPZ5CuKQ=s48-c-k-c0x00ffffff-no-rj",
+            "alt": "Bloomberg Television",
+            "description": "Profile image of Bloomberg Television"
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.oanda.com/us-en/trade-tap-blog/asset-classes/crypto/mid-month-crypto-update-december-2025/",
-    "status": "error",
-    "duration": 0.0026154518127441406,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.010337352752686,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.youtube.com/watch?v=7w4dKwC4d7c",
-    "status": "error",
-    "duration": 0.0025370121002197266,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 22.509753465652466,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "Crypto market structure legislation pushed to 2026, says Senate Banking Committee: CNBC Crypto World",
+        "summary": "On today's episode of CNBC Crypto World, bitcoin rises after the delayed November jobs report showed payrolls rose more than expected after falling by 105,000 in October. Plus, the Senate Banking Committee says movement on crypto market structure legislation will be pushed to 2026.",
+        "full_text": "On today's episode of CNBC Crypto World, bitcoin rises after the delayed November jobs report showed payrolls rose more than expected after falling by 105,000 in October. Plus, the Senate Banking Committee says movement on crypto market structure legislation will be pushed to 2026. And, Cuy Sheffield of Visa breaks down the payment giants' new settlement offering for stablecoins.",
+        "published_date": "2025-12-16",
+        "images": [
+          {
+            "url": "https://yt3.ggpht.com/m5dRXUmCucfjKzBPXgu_Rztfe2glZ3Otj22pX3hoRkzMYY9A7YcW3CZI-3VMa-KVBQPXE3eQLA=s48-c-k-c0x00ffffff-no-rj",
+            "alt": "CNBC Television",
+            "description": "Profile image of CNBC Television"
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.cnbc.com/video/2025/12/15/bitcoin-slips-to-86000-level-as-key-ai-stocks-continue-to-face-pressure-cnbc-crypto-world.html",
-    "status": "error",
-    "duration": 0.002462148666381836,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 16.573581218719482,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "Access Denied",
+        "summary": "You don't have permission to access the requested page.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.theblock.co/",
-    "status": "error",
-    "duration": 0.0023288726806640625,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 14.540642023086548,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "Oops, there was an error.",
+        "summary": "An error occurred while trying to access the content.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://news.northeastern.edu/2025/12/03/bitcoin-drop-cryptocurrency-market-value/",
-    "status": "error",
-    "duration": 0.0027632713317871094,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.020371437072754,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.cnbc.com/cryptoworld/",
-    "status": "error",
-    "duration": 0.002642393112182617,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 3.349952220916748,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "Access Denied",
+        "summary": "You don't have permission to access the page.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.idnfinancials.com/news/59600/bitcoin-falls-below-us89-000-market-awaits-signals-from-the-fed",
-    "status": "error",
-    "duration": 0.0024862289428710938,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 32.361607789993286,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "detail",
+        "title": "Bitcoin falls below US$89,000, market awaits signals from the Fed",
+        "summary": "Bitcoin slips below US$89,000 as market awaits signals from the Fed amidst low liquidity.",
+        "full_text": "Amidst the red wave of bitcoin, ethereum (ETH) showed relative resilience.\n\nJAKARTA - The global cryptocurrency market came under renewed pressure on Sunday trading, with Bitcoin slipping below the psychological level of US$89,000 as risk appetite thinned amid low weekend liquidity.\n\nBitcoin dominance was observed to remain around 57%. Heavy selling pressure was evident in major altcoins such as Solana, XRP, Dogecoin, and Cardano (ADA), all of which recorded double\u2011digit losses over the past month.\n\nAccording to coindesk.com (14 December), amid the market downturn, Ethereum (ETH) showed relative resilience. The world\u2019s second\u2011largest cryptocurrency traded around US$3,104, posting a gain of more than 2% over the past week, effectively outperforming Bitcoin\u2019s weekly performance.\n\nOverall, the cryptocurrency market capitalisation shrank by 0.8% to US$3.15 trillion. Technical analyst Ali Martinez warned via X that Bitcoin is now in a vulnerable position, with US$86,000 seen as the last line of defence which, if breached, could trigger further selling.\n\nMarket tensions were mainly driven by anticipation of macroeconomic data. In the United States, investors awaited inflation figures and speeches from Federal Reserve Governors Stephen Miran and Christopher J. Waller.\n\nMeanwhile, in Asia, markets monitored Bank of Japan (BOJ) Governor Kazuo Ueda, where a predicted interest rate hike to 0.75% on Thursday is feared to hit global liquidity by unwinding yen\u2011funded carry trades. (SF/LM)",
+        "published_date": "2025-12-15",
+        "images": [
+          {
+            "url": "https://photos.idnfinancials.com/static/web/_DESIGN%20GRAFIS/ARTIKEL%20IMAGE%20%28ARIF%29/BITCOIN.png",
+            "alt": "Bitcoin",
+            "description": "Image related to Bitcoin market analysis."
+          }
+        ],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://techstartups.com/2025/12/16/top-startup-and-tech-funding-news-december-16-2025/",
-    "status": "error",
-    "duration": 0.0023767948150634766,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.02151274681091,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://graphics-unleashed.com/2025/12/tech-news-digest-for-december-12-2025/",
-    "status": "error",
-    "duration": 0.0022809505462646484,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 7.9520018100738525,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "Sorry, you have been blocked",
+        "summary": "You are unable to access graphics-unleashed.com due to a security block.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://techcrunch.com/",
-    "status": "error",
-    "duration": 0.0034749507904052734,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.01177215576172,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.cnn.com/2025/12/16/business/video/artificial-intelligence-tech-force-duffy-live-121612pseg1-cnni-business-fast",
-    "status": "error",
-    "duration": 0.003258943557739258,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 3.9896304607391357,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "unknown",
+        "title": "Unknown Error",
+        "summary": "No content available.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": []
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.technologyreview.com/",
-    "status": "error",
-    "duration": 0.0031409263610839844,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 28.18799901008606,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "list",
+        "title": "MIT Technology Review",
+        "summary": "Latest articles and features from MIT Technology Review, focusing on AI and technology.",
+        "full_text": null,
+        "published_date": null,
+        "images": [
+          {
+            "url": "https://wp.technologyreview.com/wp-content/uploads/2025/12/MIT_AI-Hype_2-1.jpg",
+            "alt": "The great AI hype correction of 2025",
+            "description": "Featured story image for the article on AI hype correction."
+          },
+          {
+            "url": "https://wp.technologyreview.com/wp-content/uploads/2025/12/thumbnail2c.jpg",
+            "alt": "Why it\u2019s time to reset our expectations for AI",
+            "description": "Thumbnail image for the article on resetting expectations for AI."
+          },
+          {
+            "url": "https://wp.technologyreview.com/wp-content/uploads/2025/12/251211_quantum_navigation_hero.jpg",
+            "alt": "Quantum navigation could solve the military\u2019s GPS jamming problem",
+            "description": "Hero image for the article on quantum navigation."
+          }
+        ],
+        "items": [
+          {
+            "title": "The great AI hype correction of 2025",
+            "url": "https://www.technologyreview.com/2025/12/15/1129174/the-great-ai-hype-correction-of-2025/",
+            "snippet": "Four ways to think about this year's reckoning",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "Why it\u2019s time to reset our expectations for AI",
+            "url": "https://www.technologyreview.com/2025/12/16/1129946/why-its-time-to-reset-our-expectations-for-ai/",
+            "snippet": "A discussion on resetting expectations for AI.",
+            "published_date": "2025-12-16"
+          },
+          {
+            "title": "AI coding is now everywhere. But not everyone is convinced.",
+            "url": "https://www.technologyreview.com/2025/12/15/1128352/rise-of-ai-coding-developers-2026/",
+            "snippet": "Exploring the prevalence of AI coding.",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "The AI doomers feel undeterred",
+            "url": "https://www.technologyreview.com/2025/12/15/1129171/the-ai-doomers-feel-undeterred/",
+            "snippet": "An analysis of the AI doomers' perspective.",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "Quantum navigation could solve the military\u2019s GPS jamming problem",
+            "url": "https://www.technologyreview.com/2025/12/16/1129887/quantum-navigation-militarys-gps-jamming-problem/",
+            "snippet": "Exploring quantum navigation solutions.",
+            "published_date": "2025-12-16"
+          },
+          {
+            "title": "What even is the AI bubble?",
+            "url": "https://www.technologyreview.com/2025/12/15/1129183/what-even-is-the-ai-bubble/",
+            "snippet": "Understanding the AI bubble phenomenon.",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "AI materials discovery now needs to move into the real world",
+            "url": "https://www.technologyreview.com/2025/12/15/1129210/ai-materials-science-discovery-startups-investment/",
+            "snippet": "The need for real-world applications in AI materials discovery.",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "A brief history of Sam Altman\u2019s hype",
+            "url": "https://www.technologyreview.com/2025/12/15/1129169/a-brief-history-of-sam-altmans-hype/",
+            "snippet": "A look at Sam Altman's influence on AI hype.",
+            "published_date": "2025-12-15"
+          },
+          {
+            "title": "AI might not be coming for lawyers\u2019 jobs anytime soon",
+            "url": "https://www.technologyreview.com/2025/12/15/1129181/ai-might-not-be-coming-for-lawyers-jobs-anytime-soon/",
+            "snippet": "Discussing the future of AI in the legal profession.",
+            "published_date": "2025-12-15"
+          }
+        ]
+      },
+      "error": null
+    }
   },
   {
     "url": "https://www.deloitte.com/us/en/insights/topics/technology-management/tech-trends.html",
-    "status": "error",
-    "duration": 0.003031015396118164,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.0194194316864,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.wsj.com/tech?gaa_at=eafs&gaa_n=AWEtsqe7HrmVi7tjbwRBZik4L8b4Iok-pag8pRoCyJASc53sBQ7uZeeSMSE4&gaa_ts=69424c70&gaa_sig=jFUmoDsHzn_E-9k5Fdi-exsj8VaFNUZFIqBCdkhPUKO_gJ33Dh1ZIRM9Ad48yDEmWz5xMJALu1lSJcOvjG2w5A%253D%253D",
-    "status": "error",
-    "duration": 0.002921581268310547,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 8.493623495101929,
+    "result": {
+      "ok": true,
+      "data": {
+        "type": "list",
+        "title": "Wall Street Journal",
+        "summary": "Latest news updates from the Wall Street Journal.",
+        "full_text": null,
+        "published_date": null,
+        "images": [],
+        "items": [
+          {
+            "title": "Market Update",
+            "url": "https://www.wsj.com/market-update",
+            "snippet": "Stocks rise as investors remain optimistic.",
+            "published_date": "2023-10-01"
+          },
+          {
+            "title": "Tech Innovations",
+            "url": "https://www.wsj.com/tech-innovations",
+            "snippet": "New advancements in AI technology.",
+            "published_date": "2023-10-02"
+          },
+          {
+            "title": "Global Economic Trends",
+            "url": "https://www.wsj.com/global-economic-trends",
+            "snippet": "Analyzing the impact of inflation worldwide.",
+            "published_date": "2023-10-03"
+          }
+        ]
+      },
+      "error": null
+    }
   },
   {
     "url": "https://technews.acm.org/",
-    "status": "error",
-    "duration": 0.0024569034576416016,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.01485896110535,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.technewsworld.com/",
-    "status": "error",
-    "duration": 0.002299785614013672,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.01456832885742,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.livescience.com/news/archive/2025/12",
-    "status": "error",
-    "duration": 0.0021851062774658203,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.024662494659424,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.sciencenews.org/sn-magazine/december-2025",
-    "status": "error",
-    "duration": 0.002100706100463867,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.02584528923035,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.nature.com/immersive/d41586-025-03848-1/index.html",
-    "status": "error",
-    "duration": 0.0020246505737304688,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+    "status": 200,
+    "duration": 45.02167010307312,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   },
   {
     "url": "https://www.producthunt.com/",
-    "status": "error",
-    "duration": 0.0007469654083251953,
-    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+    "status": 200,
+    "duration": 45.01492404937744,
+    "result": {
+      "ok": false,
+      "data": null,
+      "error": "Processing timed out (server limit)"
+    }
   }
 ]

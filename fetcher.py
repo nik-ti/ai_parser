@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 _playwright: Playwright = None
 _browser: Browser = None
 _browser_lock = asyncio.Lock()
-_semaphore = asyncio.Semaphore(5)  # Limit concurrent page fetches
+_semaphore = asyncio.Semaphore(3)  # Limit concurrent page fetches
 
 async def initialize_browser():
     """Initialize the persistent browser instance."""
@@ -23,7 +23,10 @@ async def initialize_browser():
         
         logger.info("Initializing persistent browser...")
         _playwright = await async_playwright().start()
-        _browser = await _playwright.chromium.launch(headless=True)
+        _browser = await _playwright.chromium.launch(
+            headless=True,
+            args=['--disable-dev-shm-usage', '--no-sandbox'] # Crucial for Docker
+        )
         logger.info("Browser initialized successfully")
 
 async def close_browser():
@@ -54,6 +57,11 @@ async def fetch_page_html(url: str) -> str:
         try:
             page = await _browser.new_page()
             
+            # Set a realistic User-Agent to avoid simple blocking
+            await page.set_extra_http_headers({
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            })
+
             # Block unnecessary resources for speed
             await page.route("**/*", lambda route: route.abort() 
                 if route.request.resource_type in ["image", "media", "font", "stylesheet"] 

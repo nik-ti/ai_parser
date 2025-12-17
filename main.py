@@ -6,6 +6,7 @@ from cleaner import clean_html
 from llm_client import generate_parsing_code
 from sandbox import execute_parsing_code
 import logging
+import asyncio
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +28,7 @@ app = FastAPI(title="AI Parser Microservice", lifespan=lifespan)
 async def parse_url(request: UrlRequest):
     logger.info(f"Received request to parse: {request.url}")
     
-    try:
+    async def process_logic():
         # 1. Fetch HTML
         logger.info("Fetching HTML...")
         raw_html = await fetch_page_html(request.url)
@@ -47,10 +48,9 @@ async def parse_url(request: UrlRequest):
         
         # 5. Validation & Response Construction
         if not isinstance(parsed_data, dict):
-            # Fallback if LLM returned list instead of dict (should vary rarely happen with new prompt)
+            # Fallback if LLM returned list instead of dict
             logger.warning(f"Unexpected type {type(parsed_data)}, trying to wrap...")
             if isinstance(parsed_data, list):
-                # Guess it's a list page
                 parsed_data = {"type": "list", "items": parsed_data, "images": []}
             else:
                 parsed_data = {"type": "unknown", "items": [], "images": []}
@@ -60,19 +60,21 @@ async def parse_url(request: UrlRequest):
             parsed_data["type"] = "unknown"
 
         # Construct Pydantic model
-        # Filter out keys that aren't in the model to prevent validation errors
         valid_keys = ParsedContent.model_fields.keys()
         filtered_data = {k: v for k, v in parsed_data.items() if k in valid_keys}
         
-        content = ParsedContent(**filtered_data)
+        return ParsedContent(**filtered_data)
+
+    try:
+        # Enforce a global timeout of 45 seconds for the entire operation
+        content = await asyncio.wait_for(process_logic(), timeout=45)
         
         logger.info(f"Parsing successful. Type: {content.type}")
         return ParseResponse(ok=True, data=content)
 
-    except Exception as e:
-        logger.error(f"Error processing request: {e}")
-        return ParseResponse(ok=False, error=str(e))
-
+    except asyncio.TimeoutError:
+        logger.error(f"Request timed out processing {request.url}")
+        return ParseResponse(ok=False, error="Processing timed out (server limit)")
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return ParseResponse(ok=False, error=str(e))
