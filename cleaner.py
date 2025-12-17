@@ -1,40 +1,38 @@
 from bs4 import BeautifulSoup, Comment
+from markdownify import markdownify as md
 
-def clean_html(html_content: str, max_length: int = 200000) -> str:
+def clean_html(html_content: str, max_length: int = 100000) -> str:
     """
-    Cleans the HTML by removing scripts, styles, and other non-content elements.
-    Truncates the result to max_length to save tokens.
+    Cleans the HTML by removing garbage and converting to Markdown.
     """
     soup = BeautifulSoup(html_content, "html.parser")
 
     # Remove unwanted tags
-    for tag in soup(["script", "style", "svg", "noscript", "iframe", "object", "embed", "meta", "link", "nav", "header", "footer", "aside"]):
+    for tag in soup(["script", "style", "svg", "noscript", "iframe", "object", "embed", "meta", "link"]):
         tag.decompose()
         
     # Remove common clutter by ID/Class (Aggressive Cleaning)
     clutter_selectors = [
-        "#menu", "#nav", "#header", "#footer", "#sidebar", "#sidebar_right", "#header_boundary", 
+        "#menu", "#nav", "#header", "#sidebar", "#sidebar_right", "#header_boundary", 
         ".hidden", ".modal", ".popup", ".cookie", ".ad", ".advertisement", ".social-share",
-        "div[id*='menu']", "div[class*='menu']", "div[id*='nav']", "div[class*='nav']"
+        "div[id*='menu']", "div[class*='menu']", "div[id*='nav']", "div[class*='nav']",
+        "header", "footer", "nav", "aside"
     ]
     for selector in clutter_selectors:
         for tag in soup.select(selector):
             tag.decompose()
 
-
     # Remove comments
     for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
         comment.extract()
 
-    # Get the cleaned HTML string
-    # prettify() might add too much whitespace, but it helps with structure. 
-    # However, for LLM token efficiency, we might just want the structure without excessive whitespace.
-    # Let's use str(soup) but maybe try to minimize it? 
-    # Actually, keeping structure is good for the LLM to understand the DOM.
-    cleaned_html = str(soup)
+    # Convert to Markdown (strip=['a'] means we keep links, but we might want to keep images too)
+    # We want to keep: a, img, h1-h6, p, ul, ol, li, table, pre, code
+    # markdownify defaults are pretty good.
+    cleaned_md = md(str(soup), heading_style="ATX", strip=["script", "style"])
 
     # Simple truncation
-    if len(cleaned_html) > max_length:
-        cleaned_html = cleaned_html[:max_length] + "... (truncated)"
+    if len(cleaned_md) > max_length:
+        cleaned_md = cleaned_md[:max_length] + "\n...(truncated)"
 
-    return cleaned_html
+    return cleaned_md

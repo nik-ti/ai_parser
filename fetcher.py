@@ -44,37 +44,33 @@ async def close_browser():
 async def fetch_page_html(url: str) -> str:
     """
     Fetches the fully rendered HTML of the given URL using a persistent browser.
-    Tries networkidle first, falls back to domcontentloaded if it times out.
+    Blocks images/fonts/media for speed.
     """
-    # Ensure browser is initialized
     if _browser is None:
         await initialize_browser()
     
-    # Use semaphore to limit concurrent fetches
     async with _semaphore:
         page = None
         try:
-            # Create a new page (context) for this request
             page = await _browser.new_page()
             
-            # Try networkidle first (better for SPAs)
+            # Block unnecessary resources for speed
+            await page.route("**/*", lambda route: route.abort() 
+                if route.request.resource_type in ["image", "media", "font", "stylesheet"] 
+                else route.continue_())
+
+            # domcontentloaded is usually enough for content, networkidle is too slow
             try:
-                logger.info(f"Attempting to load {url} with networkidle...")
-                await page.goto(url, wait_until="networkidle", timeout=30000)
-                logger.info("Successfully loaded with networkidle")
+                logger.info(f"Loading {url}...")
+                await page.goto(url, wait_until="domcontentloaded", timeout=20000)
             except Exception as e:
-                # Fallback to domcontentloaded + delay
-                logger.warning(f"networkidle failed for {url}: {e}. Falling back to domcontentloaded...")
-                await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-                await page.wait_for_timeout(2000)
-                logger.info("Loaded with domcontentloaded + 2s delay")
+                logger.warning(f"Timeout/Error loading {url}: {e}")
             
-            # Auto-scroll to trigger lazy loading (scroll down 3 times)
-            logger.info("Auto-scrolling to trigger lazy loading...")
-            for _ in range(3):
-                await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
-                await page.wait_for_timeout(1000)  # Wait for content to load
+            # Fast scroll to trigger lazy text/content (images are blocked but structure might load)
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await page.wait_for_timeout(1000) 
             
+            # Get content
             content = await page.content()
             return content
             
@@ -82,6 +78,5 @@ async def fetch_page_html(url: str) -> str:
             logger.error(f"Error fetching {url}: {e}")
             raise e
         finally:
-            # Always close the page to free resources
             if page:
                 await page.close()

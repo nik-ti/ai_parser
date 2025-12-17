@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
-from models import UrlRequest, ParseResponse
+from models import UrlRequest, ParseResponse, ParsedContent
 from fetcher import fetch_page_html, initialize_browser, close_browser
 from cleaner import clean_html
 from llm_client import generate_parsing_code
@@ -32,61 +32,46 @@ async def parse_url(request: UrlRequest):
         logger.info("Fetching HTML...")
         raw_html = await fetch_page_html(request.url)
         
-        # 2. Clean and Truncate
-        logger.info("Cleaning HTML...")
-        cleaned_html = clean_html(raw_html)
+        # 2. Clean and Convert to Markdown
+        logger.info("Cleaning & Converting to Markdown...")
+        markdown_content = clean_html(raw_html)
         
         # 3. Generate Code via LLM
         logger.info("Generating parsing code...")
-        parsing_code = await generate_parsing_code(cleaned_html, schema_map=request.schema_map, page_type=request.page_type)
+        parsing_code = await generate_parsing_code(markdown_content, schema_map=request.schema_map, page_type=request.page_type)
         logger.info(f"Generated Code:\n{parsing_code}")
         
         # 4. Execute Code in Sandbox
         logger.info("Executing code...")
-        parsed_data = execute_parsing_code(parsing_code, cleaned_html, base_url=request.url)
+        parsed_data = execute_parsing_code(parsing_code, markdown_content, base_url=request.url)
         
-        # 5. Ensure data is always an array and determine page_type
-        if not isinstance(parsed_data, list):
-            parsed_data = [parsed_data]
-        
-        # 6. Validate and clean garbage extractions
-        # Detect page type first so we know what validation rules to apply
-        detected_page_type = request.page_type
-        if not detected_page_type:
-             if len(parsed_data) > 1:
-                detected_page_type = "list"
-             elif len(parsed_data) == 1 and isinstance(parsed_data[0], dict):
-                has_detail_fields = any(key in parsed_data[0] for key in ["full_text", "summary"])
-                detected_page_type = "detail" if has_detail_fields else "list"
-             else:
-                detected_page_type = "list"
+        # 5. Validation & Response Construction
+        if not isinstance(parsed_data, dict):
+            # Fallback if LLM returned list instead of dict (should vary rarely happen with new prompt)
+            logger.warning(f"Unexpected type {type(parsed_data)}, trying to wrap...")
+            if isinstance(parsed_data, list):
+                # Guess it's a list page
+                parsed_data = {"type": "list", "items": parsed_data, "images": []}
+            else:
+                parsed_data = {"type": "unknown", "items": [], "images": []}
 
-        for item in parsed_data:
-            if isinstance(item, dict):
-                # ONLY validate full_text if it's a DETAIL page
-                if detected_page_type == "detail" and "full_text" in item:
-                    text = item.get("full_text", "")
-                    # Remove if it's just whitespace, repeated chars, or very short
-                    if len(text.strip()) < 50 or len(set(text.replace("\n", "").replace(" ", ""))) < 5:
-                        logger.warning(f"Detected garbage full_text: {text[:50]}... Clearing fields.")
-                        item["full_text"] = ""
-                        item["summary"] = ""
-                        item["images"] = []
-                        item["links"] = []
-                
-                # Inject URL for detail pages (ensure it's always present)
-                if detected_page_type == "detail" and ("full_text" in item or "summary" in item):
-                     if "url" not in item or not item["url"]:
-                        item["url"] = request.url
+        # Ensure type field exists
+        if "type" not in parsed_data:
+            parsed_data["type"] = "unknown"
 
-        # Check if we ended up with empty data after cleaning
-        if detected_page_type == "detail" and len(parsed_data) == 1:
-             # If detail page became empty/invalid, we still return the structure but maybe flag it?
-             # For now, we return what we have. API consumer checks for empty fields.
-             pass
+        # Construct Pydantic model
+        # Filter out keys that aren't in the model to prevent validation errors
+        valid_keys = ParsedContent.model_fields.keys()
+        filtered_data = {k: v for k, v in parsed_data.items() if k in valid_keys}
         
-        logger.info(f"Parsing successful. Type: {detected_page_type}")
-        return ParseResponse(ok=True, page_type=detected_page_type, data=parsed_data)
+        content = ParsedContent(**filtered_data)
+        
+        logger.info(f"Parsing successful. Type: {content.type}")
+        return ParseResponse(ok=True, data=content)
+
+    except Exception as e:
+        logger.error(f"Error processing request: {e}")
+        return ParseResponse(ok=False, error=str(e))
 
     except Exception as e:
         logger.error(f"Error processing request: {e}")

@@ -1,0 +1,188 @@
+[
+  {
+    "url": "https://www.whitehouse.gov/presidential-actions/2025/12/eliminating-state-law-obstruction-of-national-artificial-intelligence-policy/",
+    "status": "error",
+    "duration": 0.016849517822265625,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.nature.com/articles/d41586-025-04053-w",
+    "status": "error",
+    "duration": 0.013498306274414062,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.artificialintelligence-news.com/",
+    "status": "error",
+    "duration": 0.012194395065307617,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.nytimes.com/2025/12/15/technology/ai-risks-debt.html",
+    "status": "error",
+    "duration": 0.011831283569335938,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://medium.com/@social_57513/ai-this-week-what-really-changed-between-december-8-14-2025-c987b955428e",
+    "status": "error",
+    "duration": 0.010811328887939453,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://amiko.consulting/en/the-ai-revolution-in-december-2025-latest-trends-changing-the-world-and-potential-applications-in-manufacturing/",
+    "status": "error",
+    "duration": 0.004221439361572266,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.itu.int/hub/2025/12/un-working-group-launches-new-ai-resource-hub/",
+    "status": "error",
+    "duration": 0.004029512405395508,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.marketingprofs.com/opinions/2025/54114/ai-update-december-12-2025-ai-news-and-views-from-the-past-week",
+    "status": "error",
+    "duration": 0.003922224044799805,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://fortune.com/2025/12/16/google-researchers-ai-agents-multi-agent-getting-them-to-work/",
+    "status": "error",
+    "duration": 0.002852916717529297,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.coindesk.com/markets/2025/12/16/crypto-markets-today-bitcoin-ether-extend-pullback-amid-thin-liquidity-macro-jitters",
+    "status": "error",
+    "duration": 0.002672433853149414,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=aYczyMwa-AI",
+    "status": "error",
+    "duration": 0.002710580825805664,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.oanda.com/us-en/trade-tap-blog/asset-classes/crypto/mid-month-crypto-update-december-2025/",
+    "status": "error",
+    "duration": 0.0026154518127441406,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=7w4dKwC4d7c",
+    "status": "error",
+    "duration": 0.0025370121002197266,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.cnbc.com/video/2025/12/15/bitcoin-slips-to-86000-level-as-key-ai-stocks-continue-to-face-pressure-cnbc-crypto-world.html",
+    "status": "error",
+    "duration": 0.002462148666381836,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.theblock.co/",
+    "status": "error",
+    "duration": 0.0023288726806640625,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://news.northeastern.edu/2025/12/03/bitcoin-drop-cryptocurrency-market-value/",
+    "status": "error",
+    "duration": 0.0027632713317871094,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.cnbc.com/cryptoworld/",
+    "status": "error",
+    "duration": 0.002642393112182617,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.idnfinancials.com/news/59600/bitcoin-falls-below-us89-000-market-awaits-signals-from-the-fed",
+    "status": "error",
+    "duration": 0.0024862289428710938,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://techstartups.com/2025/12/16/top-startup-and-tech-funding-news-december-16-2025/",
+    "status": "error",
+    "duration": 0.0023767948150634766,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://graphics-unleashed.com/2025/12/tech-news-digest-for-december-12-2025/",
+    "status": "error",
+    "duration": 0.0022809505462646484,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://techcrunch.com/",
+    "status": "error",
+    "duration": 0.0034749507904052734,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.cnn.com/2025/12/16/business/video/artificial-intelligence-tech-force-duffy-live-121612pseg1-cnni-business-fast",
+    "status": "error",
+    "duration": 0.003258943557739258,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.technologyreview.com/",
+    "status": "error",
+    "duration": 0.0031409263610839844,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.deloitte.com/us/en/insights/topics/technology-management/tech-trends.html",
+    "status": "error",
+    "duration": 0.003031015396118164,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.wsj.com/tech?gaa_at=eafs&gaa_n=AWEtsqe7HrmVi7tjbwRBZik4L8b4Iok-pag8pRoCyJASc53sBQ7uZeeSMSE4&gaa_ts=69424c70&gaa_sig=jFUmoDsHzn_E-9k5Fdi-exsj8VaFNUZFIqBCdkhPUKO_gJ33Dh1ZIRM9Ad48yDEmWz5xMJALu1lSJcOvjG2w5A%253D%253D",
+    "status": "error",
+    "duration": 0.002921581268310547,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://technews.acm.org/",
+    "status": "error",
+    "duration": 0.0024569034576416016,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.technewsworld.com/",
+    "status": "error",
+    "duration": 0.002299785614013672,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.livescience.com/news/archive/2025/12",
+    "status": "error",
+    "duration": 0.0021851062774658203,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.sciencenews.org/sn-magazine/december-2025",
+    "status": "error",
+    "duration": 0.002100706100463867,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  },
+  {
+    "url": "https://www.nature.com/immersive/d41586-025-03848-1/index.html",
+    "status": "error",
+    "duration": 0.0020246505737304688,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8000), [Errno 111] Connect call failed ('::1', 8000, 0, 0)]"
+  },
+  {
+    "url": "https://www.producthunt.com/",
+    "status": "error",
+    "duration": 0.0007469654083251953,
+    "error": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]"
+  }
+]

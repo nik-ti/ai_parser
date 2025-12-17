@@ -1,6 +1,7 @@
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import builtins
+import re
 
 def execute_parsing_code(code: str, html_content: str, base_url: str = ""):
     """
@@ -47,9 +48,11 @@ def execute_parsing_code(code: str, html_content: str, base_url: str = ""):
     sandbox_globals = {
         "__builtins__": allowed_builtins,
         "BeautifulSoup": BeautifulSoup,
-        "html_content": html_content,
+        "html_content": html_content, # Legacy support
+        "markdown_content": html_content, # In new flow, this is markdown
         "urljoin": urljoin,
-        "base_url": base_url,
+        "re": re,
+        "base_url": base_url
     }
     
     # Local scope to capture variables defined by the code
