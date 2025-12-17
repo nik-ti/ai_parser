@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
+from contextlib import asynccontextmanager
 from models import UrlRequest, ParseResponse
-from fetcher import fetch_page_html
+from fetcher import fetch_page_html, initialize_browser, close_browser
 from cleaner import clean_html
 from llm_client import generate_parsing_code
 from sandbox import execute_parsing_code
@@ -10,7 +11,17 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AI Parser Microservice")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    logger.info("Starting up: Initializing browser...")
+    await initialize_browser()
+    yield
+    # Shutdown
+    logger.info("Shutting down: Closing browser...")
+    await close_browser()
+
+app = FastAPI(title="AI Parser Microservice", lifespan=lifespan)
 
 @app.post("/parse", response_model=ParseResponse)
 async def parse_url(request: UrlRequest):
