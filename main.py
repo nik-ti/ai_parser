@@ -28,15 +28,6 @@ app = FastAPI(title="AI Parser Microservice", lifespan=lifespan)
 async def parse_url(request: UrlRequest):
     logger.info(f"Received request to parse: {request.url}")
     
-    # Check cache first
-    cache = get_cache()
-    cached_response = cache.get(request.url, request.page_type)
-    if cached_response:
-        logger.info(f"Cache HIT for {request.url}")
-        return cached_response
-    
-    logger.info(f"Cache MISS for {request.url}, processing...")
-    
     async def process_logic():
         # 1. Fetch HTML
         logger.info("Fetching HTML...")
@@ -45,12 +36,22 @@ async def parse_url(request: UrlRequest):
         # 2. Clean and Convert to Markdown
         logger.info("Cleaning & Converting to Markdown...")
         markdown_content = clean_html(raw_html)
+
+        # 3. Check Cache by Content Hash
+        cache = get_cache()
+        cached_data = cache.get(markdown_content)
+        if cached_data:
+            logger.info(f"Cache HIT for content at {request.url}")
+            # The cached data is already a dict that matches ParsedContent or ParseResponse
+            # If it's the full ParseResponse dict from previous implementation, extract 'data'
+            inner_data = cached_data.get('data') if isinstance(cached_data, dict) and 'data' in cached_data else cached_data
+            return ParsedContent(**inner_data)
         
-        # 3. Extract Content Directly via LLM (no code generation)
+        # 4. Extract Content Directly via LLM (no code generation)
         logger.info("Extracting content via LLM...")
         parsed_data = await extract_content(markdown_content, base_url=request.url)
         
-        # 4. Fallback to readability if LLM failed or returned minimal data
+        # 5. Fallback to readability if LLM failed or returned minimal data
         if (parsed_data.get("type") == "unknown" or 
             not parsed_data.get("title") or 
             parsed_data.get("title") in ["Error extracting content", "403 - Forbidden", "nytimes.com"]):
@@ -60,10 +61,8 @@ async def parse_url(request: UrlRequest):
             # Merge: prefer fallback for content, keep LLM for images if available
             if fallback_data.get("full_text"):
                 parsed_data = fallback_data
-                if not parsed_data.get("images") and parsed_data.get("images"):
-                    parsed_data["images"] = parsed_data.get("images", [])
         
-        # 5. Validation & Response Construction
+        # 6. Validation & Response Construction
         if not isinstance(parsed_data, dict):
             logger.warning(f"Unexpected type {type(parsed_data)}, using fallback...")
             parsed_data = {"type": "unknown", "items": [], "images": []}
@@ -76,20 +75,19 @@ async def parse_url(request: UrlRequest):
         valid_keys = ParsedContent.model_fields.keys()
         filtered_data = {k: v for k, v in parsed_data.items() if k in valid_keys}
         
-        return ParsedContent(**filtered_data)
+        result = ParsedContent(**filtered_data)
+        
+        # Cache the result for this specific content
+        cache.set(markdown_content, result.model_dump())
+        
+        return result
 
     try:
         # Enforce a global timeout of 90 seconds for the entire operation
-        # This accommodates LLM processing (30-40s) + page fetch + overhead
         content = await asyncio.wait_for(process_logic(), timeout=90)
         
         logger.info(f"Parsing successful. Type: {content.type}")
-        response = ParseResponse(ok=True, data=content)
-        
-        # Cache successful response (validation happens inside cache.set)
-        cache.set(request.url, response.model_dump(), request.page_type)
-        
-        return response
+        return ParseResponse(ok=True, data=content)
 
     except asyncio.TimeoutError:
         logger.error(f"Request timed out processing {request.url}")

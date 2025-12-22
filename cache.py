@@ -1,37 +1,38 @@
 """
-Simple in-memory cache for parsed content.
-Caches successful responses for 1 hour to reduce LLM costs and improve speed.
+Content-aware cache for parsed content.
+Caches LLM results by content hash to save costs while ensuring fresh data is always fetched.
 """
 import time
-from typing import Optional, Dict, Any
 import hashlib
-import json
+import logging
+from typing import Optional, Dict, Any
+
+logger = logging.getLogger(__name__)
 
 class ParseCache:
     def __init__(self, ttl_seconds: int = 3600):
         self._cache: Dict[str, tuple[Any, float]] = {}
         self._ttl = ttl_seconds
     
-    def _make_key(self, url: str, page_type: Optional[str] = None) -> str:
-        """Generate cache key from URL and optional page_type."""
-        key_data = f"{url}:{page_type or 'auto'}"
-        return hashlib.md5(key_data.encode()).hexdigest()
+    def _make_hash(self, content: str) -> str:
+        """Generate a stable hash for the markdown content."""
+        return hashlib.md5(content.encode('utf-8')).hexdigest()
     
     def _is_valid_response(self, data: Any) -> bool:
         """Check if cached response is valid (not empty/null/error)."""
         if not data:
             return False
         
-        # Check if it's a successful response with actual data
         if isinstance(data, dict):
-            parsed_data = data.get('data')
+            # If it's the wrapped ParseResponse format
+            parsed_data = data.get('data') if 'data' in data else data
+            
             if not parsed_data:
                 return False
-            
-            # Check if the parsed content has meaningful data
+                
             if isinstance(parsed_data, dict):
                 # Invalid if type is unknown and no content
-                if parsed_data.get('type') == 'unknown' and not parsed_data.get('full_text'):
+                if parsed_data.get('type') == 'unknown' and not (parsed_data.get('full_text') or parsed_data.get('items')):
                     return False
                 
                 # Invalid if title is an error message
@@ -43,47 +44,43 @@ class ParseCache:
         
         return False
     
-    def get(self, url: str, page_type: Optional[str] = None) -> Optional[Any]:
-        """Get cached response if valid and not expired."""
-        key = self._make_key(url, page_type)
+    def get(self, content: str) -> Optional[Any]:
+        """Get cached response if content hash matches and not expired."""
+        content_hash = self._make_hash(content)
         
-        if key in self._cache:
-            data, timestamp = self._cache[key]
+        if content_hash in self._cache:
+            data, timestamp = self._cache[content_hash]
             
             # Check if expired
             if time.time() - timestamp > self._ttl:
-                del self._cache[key]
+                del self._cache[content_hash]
+                logger.info("Cache entry expired")
                 return None
             
             # Check if valid response
             if self._is_valid_response(data):
+                logger.info(f"Cache HIT for content hash {content_hash}")
                 return data
             else:
-                # Invalid cached response, remove it
-                del self._cache[key]
+                del self._cache[content_hash]
                 return None
         
         return None
     
-    def set(self, url: str, data: Any, page_type: Optional[str] = None):
-        """Cache response only if it's valid."""
+    def set(self, content: str, data: Any):
+        """Cache response keyed by content hash."""
+        if not content:
+            return
+            
         if self._is_valid_response(data):
-            key = self._make_key(url, page_type)
-            self._cache[key] = (data, time.time())
+            content_hash = self._make_hash(content)
+            self._cache[content_hash] = (data, time.time())
+            logger.info(f"Cached result for content hash {content_hash}")
     
     def clear(self):
         """Clear all cached entries."""
         self._cache.clear()
-    
-    def cleanup_expired(self):
-        """Remove expired entries from cache."""
-        current_time = time.time()
-        expired_keys = [
-            key for key, (_, timestamp) in self._cache.items()
-            if current_time - timestamp > self._ttl
-        ]
-        for key in expired_keys:
-            del self._cache[key]
+        logger.info("Cache cleared")
     
     def stats(self) -> dict:
         """Get cache statistics."""
