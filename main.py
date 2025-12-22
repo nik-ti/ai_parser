@@ -4,6 +4,7 @@ from models import UrlRequest, ParseResponse, ParsedContent
 from fetcher import fetch_page_html, initialize_browser, close_browser
 from cleaner import clean_html
 from llm_client import extract_content
+from cache import get_cache
 import logging
 import asyncio
 
@@ -26,6 +27,15 @@ app = FastAPI(title="AI Parser Microservice", lifespan=lifespan)
 @app.post("/parse", response_model=ParseResponse)
 async def parse_url(request: UrlRequest):
     logger.info(f"Received request to parse: {request.url}")
+    
+    # Check cache first
+    cache = get_cache()
+    cached_response = cache.get(request.url, request.page_type)
+    if cached_response:
+        logger.info(f"Cache HIT for {request.url}")
+        return cached_response
+    
+    logger.info(f"Cache MISS for {request.url}, processing...")
     
     async def process_logic():
         # 1. Fetch HTML
@@ -74,7 +84,12 @@ async def parse_url(request: UrlRequest):
         content = await asyncio.wait_for(process_logic(), timeout=90)
         
         logger.info(f"Parsing successful. Type: {content.type}")
-        return ParseResponse(ok=True, data=content)
+        response = ParseResponse(ok=True, data=content)
+        
+        # Cache successful response (validation happens inside cache.set)
+        cache.set(request.url, response.model_dump(), request.page_type)
+        
+        return response
 
     except asyncio.TimeoutError:
         logger.error(f"Request timed out processing {request.url}")
@@ -82,6 +97,19 @@ async def parse_url(request: UrlRequest):
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return ParseResponse(ok=False, error=str(e))
+
+@app.get("/cache/stats")
+async def cache_stats():
+    """Get cache statistics."""
+    cache = get_cache()
+    return cache.stats()
+
+@app.post("/cache/clear")
+async def clear_cache():
+    """Clear all cached entries."""
+    cache = get_cache()
+    cache.clear()
+    return {"message": "Cache cleared successfully"}
 
 if __name__ == "__main__":
     import uvicorn
