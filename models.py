@@ -25,6 +25,7 @@ class ParsedContent(BaseModel):
     full_text: Optional[str] = None
     published_date: Optional[str] = None
     images: list[ParsedImage] = []
+    videos: list[str] = []
     items: list[ParsedItem] = []
 
 class ParseResponse(BaseModel):

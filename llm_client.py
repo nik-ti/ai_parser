@@ -22,14 +22,15 @@ SYSTEM_PROMPT = """You are an expert web content extractor. Extract structured d
     "full_text": "Complete article text (detail pages only)",
     "published_date": "YYYY-MM-DD format if found",
     "images": [{"url": "absolute URL", "alt": "alt text", "description": "context"}],
+    "videos": ["absolute URL to video (youtube, vimeo, mp4, etc)"],
     "items": [{"title": "", "url": "", "snippet": "", "published_date": ""}]  // list pages only
 }
 
 **Rules**:
 1. **Type Detection**: "detail" for single articles, "list" for feeds/indexes
-2. **Detail Pages**: Extract full_text (all content), images (exclude logos/icons), items=[]
+2. **Detail Pages**: Extract full_text (all content), images (exclude logos/icons), videos, items=[]
 3. **List Pages**: Extract items (up to 20), full_text=null, minimal images
-4. **Images**: Must be absolute URLs, capture alt + infer description from context
+4. **Images/Videos**: Must be absolute URLs. For videos, extract valid video source URLs.
 5. **Quality**: Prefer complete extraction over partial data
 
 Return ONLY valid JSON matching this schema."""
@@ -62,6 +63,8 @@ async def extract_content(markdown_content: str, base_url: str) -> dict:
             result["type"] = "unknown"
         if "images" not in result:
             result["images"] = []
+        if "videos" not in result:
+            result["videos"] = []
         if "items" not in result:
             result["items"] = []
             
@@ -75,6 +78,8 @@ async def extract_content(markdown_content: str, base_url: str) -> dict:
             "summary": str(e),
             "full_text": None,
             "published_date": None,
+            "published_date": None,
             "images": [],
+            "videos": [],
             "items": []
         }

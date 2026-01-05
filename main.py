@@ -65,7 +65,7 @@ async def parse_url(request: UrlRequest):
         # 6. Validation & Response Construction
         if not isinstance(parsed_data, dict):
             logger.warning(f"Unexpected type {type(parsed_data)}, using fallback...")
-            parsed_data = {"type": "unknown", "items": [], "images": []}
+            parsed_data = {"type": "unknown", "items": [], "images": [], "videos": []}
 
         # Ensure type field exists
         if "type" not in parsed_data:
