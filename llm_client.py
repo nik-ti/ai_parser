@@ -68,6 +68,18 @@ async def extract_content(markdown_content: str, base_url: str) -> dict:
         if "items" not in result:
             result["items"] = []
             
+        # Strict validation for videos: ensure it is list[str]
+        if "videos" in result and isinstance(result["videos"], list):
+            cleaned_videos = []
+            for v in result["videos"]:
+                if isinstance(v, str):
+                    cleaned_videos.append(v)
+                elif isinstance(v, dict) and ("url" in v or "src" in v):
+                    cleaned_videos.append(v.get("url") or v.get("src"))
+            result["videos"] = cleaned_videos
+        else:
+            result["videos"] = []
+            
         return result
         
     except Exception as e:
