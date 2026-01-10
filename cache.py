@@ -35,9 +35,16 @@ class ParseCache:
                 if parsed_data.get('type') == 'unknown' and not (parsed_data.get('full_text') or parsed_data.get('items')):
                     return False
                 
-                # Invalid if title is an error message
-                title = parsed_data.get('title', '')
-                if any(err in title.lower() for err in ['error', 'failed', 'forbidden', '403', '404']):
+                # Invalid if title is an error message or generic blocker
+                title = parsed_data.get('title', '') or ''
+                title_lower = title.lower()
+                error_keywords = [
+                    'error', 'failed', 'forbidden', '403', '404', '500', '502', '503', 
+                    'access denied', 'security challenge', 'bot detection', 'captcha', 
+                    'just a moment', 'checking your browser', 'enable javascript',
+                    'attention required', 'not available'
+                ]
+                if any(err in title_lower for err in error_keywords):
                     return False
                 
                 return True
