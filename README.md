@@ -10,6 +10,10 @@ A high-performance, intelligent web scraper and parser powered by Playwright and
     -   Persistent browser context (no startup overhead).
     -   Resource blocking (images/fonts/media) for fast crawling.
     -   Markdown conversion for efficient LLM processing.
+-   **Content-Aware Caching**: 
+    -   Always fetches fresh HTML to detect updates.
+    -   Uses MD5 content hashing to skip AI processing if content hasn't changed.
+    -   1-hour TTL with automatic re-extraction on parsing errors or bot-blockers.
 -   **Production Ready**:
     -   Unified Pydantic Schema.
     -   Concurrency limits and safe resource management.
@@ -34,6 +38,10 @@ The API returns a unified structure for all responses:
         "alt": "Image Alt Text",
         "description": "Inferred description"
       }
+    ],
+    "videos": [
+      "https://youtube.com/watch?v=...",
+      "https://example.com/video.mp4"
     ],
     "items": [] // Populated only for list pages
   }
