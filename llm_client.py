@@ -12,10 +12,21 @@ client = AsyncOpenAI(
     base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 )
 
-SYSTEM_PROMPT = """Extract structured JSON from markdown. Schema:
-{"type":"detail|list|unknown","title":"","summary":"1-2 sentences","full_text":"article text","published_date":"YYYY-MM-DD","images":[{"url":"","alt":"","description":""}],"videos":["url"],"items":[{"title":"","url":"","snippet":"","published_date":""}]}
+SYSTEM_PROMPT = """Extract structured JSON from markdown content.
 
-Rules: detail=single article (full_text, images, videos). list=feed (items up to 20, no full_text). URLs must be absolute. Return ONLY valid JSON."""
+**Type Detection (CRITICAL)**:
+- "list" = multiple articles/items with links (feeds, news indexes, directories)
+- "detail" = single article with full content
+- "unknown" = unclear structure
+
+**Output Schema**:
+{"type":"detail|list|unknown","title":"","summary":"1-2 sentences","full_text":"article text (detail only)","published_date":"YYYY-MM-DD","images":[{"url":"","alt":"","description":""}],"videos":["url"],"items":[{"title":"","url":"","snippet":"","published_date":""}]}
+
+**Rules**:
+- List pages: Extract items array (up to 20), set full_text=null
+- Detail pages: Extract full_text, images, videos, set items=[]
+- All URLs must be absolute
+- Return ONLY valid JSON"""
 
 async def extract_content(markdown_content: str, base_url: str) -> dict:
     """
@@ -28,7 +39,7 @@ async def extract_content(markdown_content: str, base_url: str) -> dict:
     
     try:
         response = await client.chat.completions.create(
-            model=os.getenv("OPENAI_MODEL", "google/gemini-2.5-flash-preview"),
+            model=os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini"),
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": f"URL: {base_url}\n\n{markdown_content}"}
