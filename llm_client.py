@@ -12,48 +12,30 @@ client = AsyncOpenAI(
     base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 )
 
-SYSTEM_PROMPT = """You are an expert web content extractor. Extract structured data from the markdown content.
+SYSTEM_PROMPT = """Extract structured JSON from markdown. Schema:
+{"type":"detail|list|unknown","title":"","summary":"1-2 sentences","full_text":"article text","published_date":"YYYY-MM-DD","images":[{"url":"","alt":"","description":""}],"videos":["url"],"items":[{"title":"","url":"","snippet":"","published_date":""}]}
 
-**Output JSON Schema**:
-{
-    "type": "detail" | "list" | "unknown",
-    "title": "Page title or headline",
-    "summary": "Brief summary (1-2 sentences)",
-    "full_text": "Complete article text (detail pages only)",
-    "published_date": "YYYY-MM-DD format if found",
-    "images": [{"url": "absolute URL", "alt": "alt text", "description": "context"}],
-    "videos": ["absolute URL to video (youtube, vimeo, mp4, etc)"],
-    "items": [{"title": "", "url": "", "snippet": "", "published_date": ""}]  // list pages only
-}
-
-**Rules**:
-1. **Type Detection**: "detail" for single articles, "list" for feeds/indexes
-2. **Detail Pages**: Extract full_text (all content), images (exclude logos/icons), videos, items=[]
-3. **List Pages**: Extract items (up to 20), full_text=null, minimal images
-4. **Images/Videos**: Must be absolute URLs. For videos, extract valid video source URLs.
-5. **Quality**: Prefer complete extraction over partial data
-
-Return ONLY valid JSON matching this schema."""
+Rules: detail=single article (full_text, images, videos). list=feed (items up to 20, no full_text). URLs must be absolute. Return ONLY valid JSON."""
 
 async def extract_content(markdown_content: str, base_url: str) -> dict:
     """
     Directly extract structured content using LLM with JSON mode.
     Much faster than code generation approach.
     """
-    # Truncate markdown to avoid token limits (keep first 8000 tokens ~32k chars)
-    if len(markdown_content) > 32000:
-        markdown_content = markdown_content[:32000] + "\n\n[Content truncated for processing]"
+    # Truncate markdown to avoid token limits (keep first ~20k chars for efficiency)
+    if len(markdown_content) > 20000:
+        markdown_content = markdown_content[:20000] + "\n\n[Content truncated]"
     
     try:
         response = await client.chat.completions.create(
-            model=os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini"),
+            model=os.getenv("OPENAI_MODEL", "google/gemini-2.5-flash-preview"),
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Base URL: {base_url}\n\nMarkdown Content:\n{markdown_content}"}
+                {"role": "user", "content": f"URL: {base_url}\n\n{markdown_content}"}
             ],
             response_format={"type": "json_object"},
             temperature=0.1,
-            max_tokens=4000
+            max_tokens=2000
         )
         
         result = json.loads(response.choices[0].message.content)

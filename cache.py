@@ -1,18 +1,25 @@
 """
 Content-aware cache for parsed content.
 Caches LLM results by content hash to save costs while ensuring fresh data is always fetched.
+Includes file-based persistence to survive restarts.
 """
 import time
 import hashlib
 import logging
+import json
+import os
 from typing import Optional, Dict, Any
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+CACHE_FILE = Path("/app/cache_data.json")
 
 class ParseCache:
     def __init__(self, ttl_seconds: int = 3600):
         self._cache: Dict[str, tuple[Any, float]] = {}
         self._ttl = ttl_seconds
+        self._load_from_disk()
     
     def _make_hash(self, content: str) -> str:
         """Generate a stable hash for the markdown content."""
@@ -24,7 +31,6 @@ class ParseCache:
             return False
         
         if isinstance(data, dict):
-            # If it's the wrapped ParseResponse format
             parsed_data = data.get('data') if 'data' in data else data
             
             if not parsed_data:
@@ -50,6 +56,30 @@ class ParseCache:
                 return True
         
         return False
+    
+    def _load_from_disk(self):
+        """Load cache from disk on startup."""
+        if CACHE_FILE.exists():
+            try:
+                with open(CACHE_FILE, 'r') as f:
+                    data = json.load(f)
+                    current_time = time.time()
+                    # Only load non-expired entries
+                    for key, (value, timestamp) in data.items():
+                        if current_time - timestamp <= self._ttl:
+                            if self._is_valid_response(value):
+                                self._cache[key] = (value, timestamp)
+                    logger.info(f"Loaded {len(self._cache)} entries from disk cache")
+            except Exception as e:
+                logger.warning(f"Failed to load cache from disk: {e}")
+    
+    def _save_to_disk(self):
+        """Save cache to disk periodically."""
+        try:
+            with open(CACHE_FILE, 'w') as f:
+                json.dump(self._cache, f)
+        except Exception as e:
+            logger.warning(f"Failed to save cache to disk: {e}")
     
     def get(self, content: str) -> Optional[Any]:
         """Get cached response if content hash matches and not expired."""
@@ -83,18 +113,28 @@ class ParseCache:
             content_hash = self._make_hash(content)
             self._cache[content_hash] = (data, time.time())
             logger.info(f"Cached result for content hash {content_hash}")
+            # Save to disk every 10 entries
+            if len(self._cache) % 10 == 0:
+                self._save_to_disk()
     
     def clear(self):
         """Clear all cached entries."""
         self._cache.clear()
+        if CACHE_FILE.exists():
+            CACHE_FILE.unlink()
         logger.info("Cache cleared")
     
     def stats(self) -> dict:
         """Get cache statistics."""
         return {
             "total_entries": len(self._cache),
-            "ttl_seconds": self._ttl
+            "ttl_seconds": self._ttl,
+            "persistent": CACHE_FILE.exists()
         }
+    
+    def save(self):
+        """Force save cache to disk."""
+        self._save_to_disk()
 
 # Global cache instance
 _cache = ParseCache(ttl_seconds=3600)  # 1 hour TTL

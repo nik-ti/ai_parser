@@ -11,6 +11,6 @@ services:
       - .env
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-    # Optional: If you need to persist logs or data, add volumes here
-    # volumes:
-    #   - ./logs:/app/logs
+      - OPENAI_MODEL=${OPENAI_MODEL}
+    volumes:
+      - ./cache_data.json:/app/cache_data.json
