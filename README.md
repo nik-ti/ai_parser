@@ -1,56 +1,74 @@
 # AI Parser Microservice
 
-A high-performance, intelligent web secondary-processing service that transforms raw webpages into structured JSON. It handles everything from complex JavaScript-heavy sites to simple articles using an AI-native approach.
+A high-performance, intelligent web secondary-processing service that transforms any raw webpage into structured JSON. It handles JavaScript-heavy sites, cookie banners, and bot-detection challenges using an AI-native approach to content extraction.
 
 ---
 
-## 🏗 Architecture Overview
+## 🏗 The Parsing Pipeline: Step-by-Step
 
-The microservice is built with a pipelined approach to ensure maximum accuracy and minimum cost:
+When you send a URL to the `/parse` endpoint, the system executes the following deterministic pipeline:
 
-1.  **Fetcher (`fetcher.py`)**: Uses **Playwright** with a persistent browser context to load URLs. It blocks heavy resources (images, fonts, media) and ad-trackers to speed up page loads and reduce bandwidth.
-2.  **Cleaner (`cleaner.py`)**: Converts raw HTML into a heavily sanitized **Markdown** format. This removes noise (scripts, styles, navigation cruft) while preserving semantic structure and media references (images, iframes).
-3.  **Cache Layer (`cache.py`)**: A **Content-Aware** persistent cache. It hashes the markdown content to determine if the page has changed before calling the AI.
-4.  **LLM Client (`llm_client.py`)**: Sends the structured Markdown to **GPT-4o-mini** (via OpenRouter) for intelligent field extraction.
-5.  **Fallback Layer (`readability_fallback.py`)**: If the LLM output is minimal or fails, a secondary classic readability algorithm (lxml/readability) attempts to rescue the content.
-6.  **Core Orchestrator (`main.py`)**: A **FastAPI** application that coordinates the flow and enforces timeouts.
+### 1. Advanced Fetching (`fetcher.py`)
+- **Engine**: Uses **Playwright** with a persistent Chromium instance.
+- **Speed Optimization**: Reuses the same browser context across requests to eliminate the 2-3s cold-start overhead of launching a browser.
+- **Resource Blocking**: To save bandwidth and time, it automatically blocks images, fonts, stylesheets, and tracking scripts (3rd party analytics).
+- **Navigation**: Waits for the network to be "idle" for at least 500ms to ensure client-side rendered content (React/Vue/Next.js) is fully loaded.
+
+### 2. Semantic Cleaning (`cleaner.py`)
+- **Raw to Markdown**: The massive HTML bloat of a modern webpage (often 500KB+) is converted into a compact, semantic **Markdown** string (usually 5-10KB).
+- **Noise Removal**: It strips out `<script>`, `<style>`, `<nav>`, `<header>`, and `<footer>` tags that contain irrelevant navigation links.
+- **Content Preservation**: It carefully keeps `<iframe>` (for videos), `<img>` (for images), and structure-rich tags like `<h1>-<h6>`, `<ul>`, and `<a>`.
+
+### 3. Content-Aware Caching Check (`cache.py`)
+- **The Hash**: We generate a unique **MD5 Fingerprint** of the cleaned Markdown content.
+- **The Shortcut**: We look up this fingerprint in our persistent cache.
+  - **HIT**: If the hash matches a previous entry, we **immediately return the stored JSON**. We NEVER make an AI call if the content results in the same fingerprint.
+  - **MISS**: If the hash is new, the pipeline proceeds to the expensive AI step.
+
+### 4. AI-Native Extraction (`llm_client.py`)
+- **The Brain**: Markdown is sent to **GPT-4o-mini** (via OpenRouter) with a specialized system prompt.
+- **JSON Mode**: The LLM is forced into `JSON Mode` to ensure the response is always a valid table/object.
+- **Field Awareness**: The AI is instructed to distinguish between "Detail" pages (articles) and "List" pages (news feeds). It intelligently selects the right fields based on the page type.
+
+### 5. Validation & Survival Fallback (`readability_fallback.py`)
+- **Sanity Check**: We check if the AI's result is "trash" (e.g., if it hit a "403 Forbidden" page or a Cloudflare "Just a moment" shield).
+- **Classic Algorithm**: If the AI output is empty or errorv-prone, we run a classic **Readability** algorithm (standard lxml-based content extraction) as a safety net.
 
 ---
 
-## 🤖 AI Processing Flow
+## 🤖 How AI is Used Exactly
 
-When a `/parse` request is received, the system follows this logic:
+Unlike traditional "Regex" or "Selector-based" scrapers that break when a website changes its design, our service uses AI to **understand intent**:
 
-```mermaid
-graph TD
-    A[Public URL] --> B[Playwright: Fetch HTML]
-    B --> C[Cleaner: Convert to Markdown]
-    C --> D{Cache Lookup: MD5 Hash}
-    D -- HIT --> E[Return Cached JSON]
-    D -- MISS --> F[LLM: Structured Extraction]
-    F --> G{Validation: Is Result Good?}
-    G -- NO --> H[Readability Fallback]
-    G -- YES --> I[Save to Persistent Cache]
-    H --> I
-    I --> J[Final JSON Response]
-```
+1.  **Page Type Detection**: The AI looks at the structure and decides: "Is this a single story (Detail) or a list of many stories (List)?"
+2.  **Schema Enforcement**: It maps unstructured website text into our strict 8-field schema (`title`, `summary`, `full_text`, etc.).
+3.  **URL Normalization**: The AI identifies relative image/video paths and converts them into absolute URLs based on the base domain.
+4.  **Content Summarization**: It generates a concise 1-2 sentence summary of the page, even if the site doesn't provide a meta-description.
 
 ---
 
-## 💾 Intelligent Caching
+## 💾 Deep-Dive: Caching Logic
 
-This service implements **Content-Aware Persistent Caching** designed for high-frequency scraping of dynamic pages:
+The caching system is designed to be **Cost-First**. It is the primary shield that keeps your LLM bill low.
 
--   **Hash-Based Keys**: Unlike URL-based caches, we hash the *parsed markdown content*. If a page is requested 100 times but the content hasn't changed, the LLM is only called **once**.
--   **Persistent Storage**: The cache is saved to `cache_data.json` every 10 updates and survives Docker container restarts via volume mounting.
--   **Error Protection**: The system detects "bad parses" (e.g., bot challenges, Cloudflare wrappers, 404 skins) and refuses to cache them, ensuring you don't save "trash" results.
--   **TTL**: Default cache validity is **1 hour**.
+### The Problem with URL Caching
+If you scrape a URL like `https://techcrunch.com/news` every 5 minutes:
+- A regular URL cache would give you stale news for 1 hour.
+- Disabling the cache would cost you an AI call every 5 minutes ($$$).
+
+### Our Solution: Content Hashing
+1.  **Fetch HTML**: We fetch the HTML every time (this is free/cheap).
+2.  **Compare Hash**: We compare the current Markdown hash with the one in the database.
+3.  **Conditional AI**: 
+    - If the hash is the same, we know **nothing** on the page has changed. **We skip the AI and return the cache.**
+    - Only when the hash changes (e.g., a new article is posted) do we pay for an AI call.
+4.  **Persistence**: The cache is saved to a local file `cache_data.json` every 10 parses and is mounted via a Docker volume so it survives server restarts.
 
 ---
 
 ## 📊 Unified Response Schema
 
-The service returns a consistent JSON object regardless of the page type:
+The API returns a unified structure for all responses:
 
 ```json
 {
@@ -95,20 +113,15 @@ OPENAI_MODEL=openai/gpt-4o-mini
 ```
 
 ### Docker Deployment
-The service is fully containerized. To deploy:
 ```bash
 docker compose up -d --build
 ```
 This will mount `./cache_data.json` as a volume to ensure cache persistence.
 
-### Endpoints
--   `POST /parse`: `{"url": "https://..."}` - Main extraction endpoint.
--   `GET /cache/stats`: Returns count of cached entries and persistence status.
--   `POST /cache/clear`: Flushes the entire cache.
-
 ---
 
 ## 🛠 Development & Testing
--   **`test_service.py`**: Integration tests for the full pipeline.
--   **`requirements.txt`**: Python dependencies (FastAPI, Playwright, Readability).
--   **Persistent Browser**: The Playwright instance stays open across requests for sub-second start times.
+-   **`GET /cache/stats`**: Shows the total number of cached entries and if persistence is active.
+-   **`POST /cache/clear`**: Wipes the entire database to force-refresh all content.
+-   **`test_service.py`**: A full suite of integration tests.
+-   **Timeout**: The system enforces a **90s global timeout** for every request to prevent hanging.
