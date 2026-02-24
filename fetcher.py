@@ -14,12 +14,29 @@ async def initialize_browser():
     """Initialize the persistent browser instance."""
     global _playwright, _browser
     
-    if _browser is not None:
+    if _browser is not None and _browser.is_connected():
         return
     
     async with _browser_lock:
-        if _browser is not None:  # Double-check after acquiring lock
+        # Double-check after acquiring lock
+        if _browser is not None and _browser.is_connected():
             return
+        
+        # Clean up old instance if it exists but is dead
+        if _browser is not None:
+            logger.warning("Browser was dead, cleaning up old instance...")
+            try:
+                await _browser.close()
+            except Exception:
+                pass
+            _browser = None
+        
+        if _playwright is not None:
+            try:
+                await _playwright.stop()
+            except Exception:
+                pass
+            _playwright = None
         
         logger.info("Initializing persistent browser...")
         _playwright = await async_playwright().start()
@@ -36,24 +53,40 @@ async def close_browser():
     async with _browser_lock:
         if _browser:
             logger.info("Closing browser...")
-            await _browser.close()
+            try:
+                await _browser.close()
+            except Exception:
+                pass
             _browser = None
         
         if _playwright:
-            await _playwright.stop()
+            try:
+                await _playwright.stop()
+            except Exception:
+                pass
             _playwright = None
             logger.info("Browser closed")
+
+async def _ensure_browser():
+    """Ensure browser is alive, restart if crashed."""
+    global _browser
+    if _browser is None or not _browser.is_connected():
+        logger.warning("Browser is dead or not initialized, restarting...")
+        await initialize_browser()
 
 async def fetch_page_html(url: str) -> str:
     """
     Fetches the fully rendered HTML of the given URL using a persistent browser.
-    Blocks images/fonts/media for speed.
+    Blocks images/fonts/media for speed. Auto-recovers if browser crashes.
     """
-    if _browser is None:
-        await initialize_browser()
+    global _browser
+    
+    # Ensure the browser is alive before attempting to use it
+    await _ensure_browser()
     
     async with _semaphore:
         page = None
+        context = None
         try:
             # Create context with realistic settings to avoid bot detection
             context = await _browser.new_context(
@@ -91,12 +124,16 @@ async def fetch_page_html(url: str) -> str:
             try:
                 logger.info(f"Loading {url}...")
                 await page.goto(url, wait_until="domcontentloaded", timeout=20000)
+                try:
+                    await page.wait_for_load_state("networkidle", timeout=5000)
+                except Exception:
+                    pass
             except Exception as e:
                 logger.warning(f"Timeout/Error loading {url}: {e}")
             
             # Fast scroll to trigger lazy text/content (images are blocked but structure might load)
             await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            await page.wait_for_timeout(1000) 
+            await page.wait_for_timeout(2000) 
             
             # Get content
             content = await page.content()
@@ -104,9 +141,19 @@ async def fetch_page_html(url: str) -> str:
             
         except Exception as e:
             logger.error(f"Error fetching {url}: {e}")
+            # If this was a browser crash, mark browser as dead so next call restarts it
+            if "Connection closed" in str(e) or "Target closed" in str(e) or "Browser closed" in str(e):
+                _browser = None
+                logger.warning("Browser crash detected, will restart on next request")
             raise e
         finally:
             if page:
-                await page.close()
-            if 'context' in locals():
-                await context.close()
+                try:
+                    await page.close()
+                except Exception:
+                    pass
+            if context:
+                try:
+                    await context.close()
+                except Exception:
+                    pass
