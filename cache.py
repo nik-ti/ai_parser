@@ -1,30 +1,79 @@
 """
-Content-aware cache for parsed content.
+Content-aware cache for parsed content using SQLite.
 Caches LLM results by content hash to save costs while ensuring fresh data is always fetched.
-Includes file-based persistence to survive restarts.
+Uses aiosqlite for non-blocking persistence.
 """
 import time
 import hashlib
 import logging
 import json
 import os
-from typing import Optional, Dict, Any
+import asyncio
+import aiosqlite
+from typing import Optional, Any
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-CACHE_FILE = Path("/app/cache_data.json")
+DB_FILE = Path("/app/cache_data.sqlite")
+OLD_CACHE_FILE = Path("/app/cache_data.json")
 
 class ParseCache:
     def __init__(self, ttl_seconds: int = 3600):
-        self._cache: Dict[str, tuple[Any, float]] = {}
         self._ttl = ttl_seconds
-        self._load_from_disk()
-    
+        self._db_initialized = False
+
+    async def _ensure_db(self):
+        """Ensure the database and table exist. Handles migration from JSON."""
+        if self._db_initialized:
+            return
+        
+        async with aiosqlite.connect(DB_FILE) as db:
+            await db.execute("""
+                CREATE TABLE IF NOT EXISTS cache (
+                    key TEXT PRIMARY KEY,
+                    value TEXT,
+                    timestamp REAL
+                )
+            """)
+            await db.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON cache(timestamp)")
+            await db.commit()
+            
+            # Migration from old JSON cache
+            if OLD_CACHE_FILE.exists():
+                logger.info("Migrating old JSON cache to SQLite...")
+                try:
+                    with open(OLD_CACHE_FILE, 'r') as f:
+                        old_data = json.load(f)
+                    
+                    entries = []
+                    current_time = time.time()
+                    for key, val_stamp in old_data.items():
+                        # Handle both [value, timestamp] and (value, timestamp) formats
+                        if isinstance(val_stamp, (list, tuple)) and len(val_stamp) == 2:
+                            value, timestamp = val_stamp
+                            if current_time - timestamp <= self._ttl:
+                                entries.append((key, json.dumps(value), timestamp))
+                    
+                    if entries:
+                        await db.executemany(
+                            "INSERT OR IGNORE INTO cache (key, value, timestamp) VALUES (?, ?, ?)",
+                            entries
+                        )
+                        await db.commit()
+                        logger.info(f"Successfully migrated {len(entries)} entries")
+                    
+                    # Rename old file instead of deleting to be safe
+                    OLD_CACHE_FILE.rename(OLD_CACHE_FILE.with_suffix(".json.bak"))
+                except Exception as e:
+                    logger.error(f"Migration failed: {e}")
+                    
+        self._db_initialized = True
+
     def _make_hash(self, content: str) -> str:
         """Generate a stable hash for the markdown content."""
         return hashlib.md5(content.encode('utf-8')).hexdigest()
-    
+
     def _is_valid_response(self, data: Any) -> bool:
         """Check if cached response is valid (not empty/null/error)."""
         if not data:
@@ -56,85 +105,84 @@ class ParseCache:
                 return True
         
         return False
-    
-    def _load_from_disk(self):
-        """Load cache from disk on startup."""
-        if CACHE_FILE.exists():
-            try:
-                with open(CACHE_FILE, 'r') as f:
-                    data = json.load(f)
-                    current_time = time.time()
-                    # Only load non-expired entries
-                    for key, (value, timestamp) in data.items():
-                        if current_time - timestamp <= self._ttl:
-                            if self._is_valid_response(value):
-                                self._cache[key] = (value, timestamp)
-                    logger.info(f"Loaded {len(self._cache)} entries from disk cache")
-            except Exception as e:
-                logger.warning(f"Failed to load cache from disk: {e}")
-    
-    def _save_to_disk(self):
-        """Save cache to disk periodically."""
-        try:
-            with open(CACHE_FILE, 'w') as f:
-                json.dump(self._cache, f)
-        except Exception as e:
-            logger.warning(f"Failed to save cache to disk: {e}")
-    
-    def get(self, content: str) -> Optional[Any]:
+
+    async def get(self, content: str) -> Optional[Any]:
         """Get cached response if content hash matches and not expired."""
+        await self._ensure_db()
         content_hash = self._make_hash(content)
         
-        if content_hash in self._cache:
-            data, timestamp = self._cache[content_hash]
-            
-            # Check if expired
-            if time.time() - timestamp > self._ttl:
-                del self._cache[content_hash]
-                logger.info("Cache entry expired")
-                return None
-            
-            # Check if valid response
-            if self._is_valid_response(data):
-                logger.info(f"Cache HIT for content hash {content_hash}")
-                return data
-            else:
-                del self._cache[content_hash]
-                return None
+        async with aiosqlite.connect(DB_FILE) as db:
+            async with db.execute("SELECT value, timestamp FROM cache WHERE key = ?", (content_hash,)) as cursor:
+                row = await cursor.fetchone()
+                if row:
+                    value_json, timestamp = row
+                    # Check if expired
+                    if time.time() - timestamp > self._ttl:
+                        await db.execute("DELETE FROM cache WHERE key = ?", (content_hash,))
+                        await db.commit()
+                        return None
+                    
+                    try:
+                        data = json.loads(value_json)
+                        if self._is_valid_response(data):
+                            return data
+                        else:
+                            await db.execute("DELETE FROM cache WHERE key = ?", (content_hash,))
+                            await db.commit()
+                            return None
+                    except json.JSONDecodeError:
+                        return None
         
         return None
-    
-    def set(self, content: str, data: Any):
+
+    async def set(self, content: str, data: Any):
         """Cache response keyed by content hash."""
         if not content:
             return
             
+        await self._ensure_db()
+        
         if self._is_valid_response(data):
             content_hash = self._make_hash(content)
-            self._cache[content_hash] = (data, time.time())
-            logger.info(f"Cached result for content hash {content_hash}")
-            # Save to disk every 10 entries
-            if len(self._cache) % 10 == 0:
-                self._save_to_disk()
-    
-    def clear(self):
+            async with aiosqlite.connect(DB_FILE) as db:
+                await db.execute(
+                    "INSERT OR REPLACE INTO cache (key, value, timestamp) VALUES (?, ?, ?)",
+                    (content_hash, json.dumps(data), time.time())
+                )
+                
+                # Cleanup expired entries occasionally (1% chance per set)
+                import random
+                if random.random() < 0.01:
+                    await db.execute("DELETE FROM cache WHERE timestamp < ?", (time.time() - self._ttl,))
+                
+                await db.commit()
+
+    async def clear(self):
         """Clear all cached entries."""
-        self._cache.clear()
-        if CACHE_FILE.exists():
-            CACHE_FILE.unlink()
+        await self._ensure_db()
+        async with aiosqlite.connect(DB_FILE) as db:
+            await db.execute("DELETE FROM cache")
+            await db.commit()
         logger.info("Cache cleared")
-    
-    def stats(self) -> dict:
+
+    async def stats(self) -> dict:
         """Get cache statistics."""
+        await self._ensure_db()
+        async with aiosqlite.connect(DB_FILE) as db:
+            async with db.execute("SELECT COUNT(*) FROM cache") as cursor:
+                count = (await cursor.fetchone())[0]
         return {
-            "total_entries": len(self._cache),
+            "total_entries": count,
             "ttl_seconds": self._ttl,
-            "persistent": CACHE_FILE.exists()
+            "persistent": True
         }
-    
-    def save(self):
-        """Force save cache to disk."""
-        self._save_to_disk()
+
+# Global cache instance
+_cache = ParseCache(ttl_seconds=3600)  # 1 hour TTL
+
+def get_cache() -> ParseCache:
+    """Get the global cache instance."""
+    return _cache
 
 # Global cache instance
 _cache = ParseCache(ttl_seconds=3600)  # 1 hour TTL

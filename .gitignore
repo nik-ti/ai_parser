@@ -17,3 +17,8 @@ dist/
 .idea/
 .vscode/
 .DS_Store
+
+# Cache data
+cache_data.json
+cache_data.sqlite
+cache_data.json.bak

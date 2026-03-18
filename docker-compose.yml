@@ -14,3 +14,4 @@ services:
       - OPENAI_MODEL=${OPENAI_MODEL}
     volumes:
       - ./cache_data.json:/app/cache_data.json
+      - ./cache_data.sqlite:/app/cache_data.sqlite

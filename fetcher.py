@@ -132,8 +132,11 @@ async def fetch_page_html(url: str) -> str:
                 logger.warning(f"Timeout/Error loading {url}: {e}")
             
             # Fast scroll to trigger lazy text/content (images are blocked but structure might load)
-            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            await page.wait_for_timeout(2000) 
+            try:
+                await page.evaluate("if(document.body) window.scrollTo(0, document.body.scrollHeight)")
+                await page.wait_for_timeout(2000) 
+            except Exception as e:
+                logger.warning(f"Scroll failed for {url}: {e}")
             
             # Get content
             content = await page.content()

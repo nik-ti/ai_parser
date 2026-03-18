@@ -39,7 +39,7 @@ async def parse_url(request: UrlRequest):
 
         # 3. Check Cache by Content Hash
         cache = get_cache()
-        cached_data = cache.get(markdown_content)
+        cached_data = await cache.get(markdown_content)
         if cached_data:
             logger.info(f"Cache HIT for content at {request.url}")
             # The cached data is already a dict that matches ParsedContent or ParseResponse
@@ -78,7 +78,7 @@ async def parse_url(request: UrlRequest):
         result = ParsedContent(**filtered_data)
         
         # Cache the result for this specific content
-        cache.set(markdown_content, result.model_dump())
+        await cache.set(markdown_content, result.model_dump())
         
         return result
 
@@ -100,13 +100,13 @@ async def parse_url(request: UrlRequest):
 async def cache_stats():
     """Get cache statistics."""
     cache = get_cache()
-    return cache.stats()
+    return await cache.stats()
 
 @app.post("/cache/clear")
 async def clear_cache():
     """Clear all cached entries."""
     cache = get_cache()
-    cache.clear()
+    await cache.clear()
     return {"message": "Cache cleared successfully"}
 
 if __name__ == "__main__":
